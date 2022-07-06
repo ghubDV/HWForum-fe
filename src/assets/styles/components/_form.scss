@@ -1,0 +1,35 @@
+@use '../base/variables/borders';
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/display';
+@use '../base/variables/typography';
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: dimensions.$smallSpacing;
+
+  &__input {
+    padding: 1rem 1.25rem;
+    width: 100%;
+    background-color: transparent;
+    color: colors.$lightGray;
+    border: borders.$default;
+    border-radius: dimensions.$normalRadius;
+
+    &::placeholder {
+      color: colors.$lightGray;
+      font-weight: typography.$boldWeight;
+    }
+  }
+}
+
+input:focus, textarea:focus {
+  outline: 0;
+}
+
+@media only screen and (min-width: display.$desktop) {
+  .form {
+    gap: dimensions.$normalSpacing;
+  }
+}

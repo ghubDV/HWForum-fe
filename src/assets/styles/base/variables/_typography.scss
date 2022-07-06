@@ -1,0 +1,60 @@
+@use 'display';
+
+//  Weights
+$thinWeight: 300;
+$normalWeight: 400;
+$boldWeight: 700;
+$thickWeight: 900;
+
+// Text Sizes
+.text {
+  font-size: 1rem;
+  font-weight: $normalWeight;
+  letter-spacing: .33px;
+
+  &--thin {
+    font-weight: $thinWeight;
+  }
+
+  &--bold {
+    font-weight: $boldWeight;
+  }
+
+  &--thick {
+    font-weight: $thickWeight;
+  }
+
+  //  Smaller sizes
+  &--deci {
+    font-size: .875rem;
+  }
+
+  &--centi {
+    font-size: .75rem;
+  }
+
+  &--micro {
+    font-size: .625rem;
+  }
+
+  //  Bigger sizes
+  &--deca {
+    font-size: 1.125rem;
+  }
+
+  &--hecto {
+    font-size: 1.25rem;
+  }
+
+  &--kilo {
+    font-size: 1.375rem;
+  }
+
+  &--mega {
+    font-size: 1.5rem;
+  }
+
+  &--giga {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,8 @@
+@use '../base/variables/dimensions';
+@use '../base/variables/shadows';
+
+.card {
+  padding: dimensions.$largeSpacing;
+  box-shadow: shadows.$smoothShadow;
+  border-radius: dimensions.$largeRadius;
+}

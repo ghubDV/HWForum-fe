@@ -1,0 +1,19 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/typography';
+
+.error, .success {
+  width: 100%;
+  padding: dimensions.$normalSpacing;
+  border-radius: dimensions.$normalRadius;
+}
+
+.error {
+  background-color: colors.$errorBackground;
+  color: colors.$errorText;
+}
+
+.success {
+  background-color: colors.$successBackground;
+  color: colors.$successText;
+}

@@ -1,0 +1,29 @@
+@use 'reset.scss';
+@use 'base/variables/colors.scss';
+@use 'base/variables/dimensions.scss';
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap');
+
+html, body, * {
+  font-family: 'Lato', Verdana, Tahoma, 'Trebuchet MS', Arial, Helvetica, sans-serif;
+}
+
+html, body {
+  color: colors.$fontDefault;
+}
+
+body {
+  background-color: colors.$darkGray;
+  overflow-x: hidden;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0 dimensions.$smallSpacing;
+}
+
+.main-content, .content-container {
+  min-height: 100vh;
+}

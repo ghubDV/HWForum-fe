@@ -1,0 +1,22 @@
+@use '../components/button';
+@use '../components/card';
+@use '../components/form';
+@use '../base/variables/dimensions';
+@use '../base/variables//typography';
+
+.authenthication {
+  width: dimensions.$authenthicationWidth;
+  max-width:100%;
+
+  &__wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__form {
+    align-items: center;
+  }
+}

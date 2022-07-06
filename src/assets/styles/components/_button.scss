@@ -1,0 +1,30 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base//variables/borders';
+
+.button {
+  padding: .75rem 1rem;
+  border-radius: dimensions.$normalRadius;
+  background-color: transparent;
+  border: borders.$default;
+  color: colors.$fontDefault;
+  transition: .2s background-color;
+
+  &:hover {
+    cursor: pointer;
+    background-color: colors.$darkGrayHover;
+  }
+
+  &--normal {
+    width: 150px;
+  }
+
+  &--primary {
+    background-color: colors.$forestGreen;
+    border: 0;
+
+    &:hover {
+      background-color: colors.$hookersGreen;
+    }
+  }
+}
