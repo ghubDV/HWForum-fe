@@ -1,10 +1,15 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import Auth from '@/modules/authenthication/Register.vue';
+import Auth from '@/modules/authenthication/Auth.vue';
 
 const routes = [
   {
     path: '/register',
-    name: 'Auth',
+    name: 'Register',
+    component: Auth,
+  },
+  {
+    path: '/login',
+    name: 'Login',
     component: Auth,
   },
 ]

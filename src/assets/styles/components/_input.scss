@@ -1,0 +1,28 @@
+@use '../base/variables/borders';
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/typography';
+
+
+.input {
+  padding: 1rem 1.25rem;
+  background-color: transparent;
+  color: colors.$lightGray;
+  border: borders.$default;
+  border-radius: dimensions.$normalRadius;
+
+  &::placeholder {
+    color: colors.$lightGray;
+    font-weight: typography.$boldWeight;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+input:focus, textarea:focus {
+  outline: 0;
+}
