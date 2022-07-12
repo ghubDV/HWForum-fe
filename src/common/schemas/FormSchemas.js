@@ -1,6 +1,6 @@
 const register = {
   title: "Create an account",
-  submit: "register",
+  submit: "Register",
   inputs: [
     {
       type: "text",
@@ -20,7 +20,7 @@ const register = {
     {
       type: "password",
       name: "confirm_password",
-      placeholder: "confirm_password",
+      placeholder: "confirm password",
     }
   ]
 }

@@ -24,7 +24,7 @@
           <Button 
             class="button button--normal button--primary text text--deci text--bold" 
             type="submit"
-            @click="submit($event)"
+            @click="handleSubmit($event)"
             :text="this.formSchema.submit"
           />
         </template>
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-import Auth from '@/services/Auth';
 import Button from '@/common/components/Button';
 import Form from '@/common/components/Form';
 import Input from '@/common/components/Input';
-import ValidationList from '@/modules/validation/ValidationList';
+import ValidationList from '@/common/components/ValidationList';
+import { authenthicate } from '@/helpers/auth.helper';
 
 export default {
   components: {
@@ -50,11 +50,11 @@ export default {
 
   data () {
     return {
-      auth: String,
-      formSchema: Array,
+      auth: '',
+      formSchema: [],
       validation: {
-        messages: Array,
-        type: String
+        messages: [],
+        type: ''
       },
     }
   },
@@ -64,7 +64,7 @@ export default {
   },
 
   methods: {
-    async submit(event) {
+    async handleSubmit(event) {
       event.preventDefault();
       this.validation.messages = [];
       let user = {};
@@ -74,17 +74,11 @@ export default {
         user[inputName] = value;
       }
 
-      await this.authenthicate(user);
-    },
-
-    async authenthicate(user) {
-       try {
-        const response = await Auth[this.auth](user);
-        this.validation.messages.push(response.data.message);
-        this.validation.type = 'success';
-      } catch (error) {
-        this.validation.messages.push(`${error.response.statusText}: ${error.response.data.message}`);
-        this.validation.type = 'error';
+      const { messages, type } = await authenthicate(this.auth, user);
+      
+      this.validation = {
+          messages: [...messages],
+          type: type
       }
     }
   }
