@@ -17,6 +17,7 @@
             :type="input.type"
             :name="input.name"
             :placeholder="input.placeholder"
+            :value="input.value ? $route.query.code : null"
             :key="i"
           />
         </template>
@@ -34,11 +35,12 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import Button from '@/common/components/Button';
 import Form from '@/common/components/Form';
 import Input from '@/common/components/Input';
 import ValidationList from '@/common/components/ValidationList';
-import { authenthicate } from '@/helpers/auth.helper';
+import { getFormData } from '@/helpers/common.helper';
 
 export default {
   components: {
@@ -52,34 +54,36 @@ export default {
     return {
       auth: '',
       formSchema: [],
-      validation: {
-        messages: [],
-        type: ''
-      },
     }
   },
+
   mounted() {
     this.auth = this.$route.path.substring(1);
     this.formSchema = require('@/common/schemas/FormSchemas')[this.auth];
   },
 
+  computed: {
+    ...mapState('auth', {
+      validation: state => state.validation
+    })
+  },
+
   methods: {
+    ...mapActions('auth', {
+      authenthicate: 'auth'
+    }),
+
     async handleSubmit(event) {
       event.preventDefault();
       this.validation.messages = [];
-      let user = {};
+      let user = getFormData(this.$refs.form.$el);
 
-      const formData = new FormData(this.$refs.form.$el);
-      for (const [inputName, value] of formData) {
-        user[inputName] = value;
+      const data = {
+        user: user,
+        authType: this.auth
       }
 
-      const { messages, type } = await authenthicate(this.auth, user);
-      
-      this.validation = {
-          messages: [...messages],
-          type: type
-      }
+      await this.authenthicate(data);
     }
   }
 }

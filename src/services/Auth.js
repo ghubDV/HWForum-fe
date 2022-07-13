@@ -1,6 +1,10 @@
 import Api from './Api';
 
 export default {
+  activate (credentials) {
+    return Api().patch('activateAccount', credentials);
+  },
+
   authorize() {
     return Api().get('checkAuthorization', { withCredentials: true });
   },

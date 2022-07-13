@@ -5,6 +5,7 @@
       :type="type" 
       :name="name"
       :placeholder="placeholder"
+      :value="value ? value : null"
     />
   </div>
 </template>
@@ -15,7 +16,8 @@ export default {
     extraClass: String,
     type: String,
     name: String,
-    placeholder: String
+    placeholder: String,
+    value: String
   }
 }
 </script>

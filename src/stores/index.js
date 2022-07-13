@@ -3,6 +3,6 @@ import authenthication from './modules/authenthication';
 
 export default createStore({
   modules: {
-    authenthication
+    auth: authenthication
   }
 })

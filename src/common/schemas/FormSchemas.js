@@ -42,7 +42,21 @@ const login = {
   ]
 }
 
+const activate = {
+  title: "Activate your account",
+  submit: "Activate",
+  inputs: [
+    {
+      type: "text",
+      name: "code",
+      placeholder: "activation code",
+      value: true
+    },
+  ]
+}
+
 export {
   register,
-  login
+  login,
+  activate
 }
