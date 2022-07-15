@@ -1,46 +1,28 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import { 
-  Auth,
-  Protected,
-  Home
-} from '@/views';
+import * as routeSchema from '@/common/schemas/route.schema';
+import * as Views from '@/views';
 import store from '@/stores';
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Auth,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Auth,
-  },
-  {
-    path: '/activate',
-    name: 'Activate',
-    component: Auth,
-  },
-  {
-    path: '/protected',
-    name: 'Protected',
-    component: Protected
-  }
-]
+const protectedRoutes = [];
 
-const protectedRoutes = [
-  '/protected',
-]
+const routes = () => {
+  let routeCollection = [];
+
+  for(const route of Object.values(routeSchema)) {
+    route.component = Views[route.component]
+    
+    if(route.protected) {
+      protectedRoutes.push(route.path);
+    }
+    routeCollection.push(route);
+  }
+
+  return routeCollection;
+}
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes: routes()
 })
 
 router.beforeEach(async (to, from, next) => {

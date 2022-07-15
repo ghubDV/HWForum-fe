@@ -21,6 +21,9 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+}
+
+.content-container {
   padding: 0 dimensions.$smallSpacing;
 }
 

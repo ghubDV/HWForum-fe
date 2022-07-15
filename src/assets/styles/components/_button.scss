@@ -27,4 +27,15 @@
       background-color: colors.$hookersGreen;
     }
   }
+
+  &--link {
+    border: 0;
+    padding: 0;
+    color: colors.$forestGreen;
+
+    &:hover {
+      text-decoration: underline;
+      background-color: transparent;
+    }
+  }
 }

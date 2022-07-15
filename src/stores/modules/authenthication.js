@@ -1,4 +1,7 @@
 import Auth from '@/services/Auth';
+import { formatResponse } from '@/helpers/common.helper';
+import Router from '@/routes';
+import { ACTIVATE, LOGIN, PROTECTED } from '@/common/schemas/route.schema';
 
 const state = {
   user: {
@@ -13,58 +16,74 @@ const state = {
 }
 
 const getters = {
-  getUserAuth(state) {
+  getUserAuth (state) {
     return state.user.isLoggedIn;
   }
 }
 
 const mutations = {
-  LOG_IN(state, payload) {
+  LOG_IN (state, payload) {
     state.user.isLoggedIn = true;
     state.user.username = payload.username;
   },
 
-  LOG_OUT(state) {
+  LOG_OUT (state) {
     state.user.isLoggedIn = false;
     state.user.username = '';
   },
 
-  UPDATE_VALIDATION(state, payload) {
-    state.validation.messages = [],
-    state.validation.type = '',
+  UPDATE_VALIDATION (state, payload) {
+    state.validation.messages = [];
+    state.validation.type = '';
 
     state.validation.messages = [...payload.messages];
     state.validation.type = payload.type;
-  }
+  },
 }
 
 const actions = {
-  async auth({ commit }, { user, authType }) {
+  async register ({ commit }, user) {
     try {
-      const response = await Auth[authType](user);
+      const response = await Auth.register(user);
 
-      commit('UPDATE_VALIDATION', {
-        messages: [response.data.message],
-        type: 'success'
-      });
+      commit('UPDATE_VALIDATION', formatResponse(response));
 
-      if(authType === 'login') {
-        commit('LOG_IN', {
-          username: response.data.username
-        });
-      }
+      Router.push(ACTIVATE.path);
       
     } catch (error) {
-      const errorMessage = `${error.response.statusText}: ${error.response.data.message}`;
-
-      commit('UPDATE_VALIDATION', {
-        messages: [errorMessage],
-        type: 'error'
-      });
+      commit('UPDATE_VALIDATION', formatResponse(error));
     }
   },
 
-  async authorize({ commit }) {
+  async login ({ commit }, user) {
+    try {
+      const response = await Auth.login(user);
+
+      commit('LOG_IN', {
+        username: response.data.username
+      });
+
+      Router.push(PROTECTED.path);
+      
+    } catch (error) {
+      commit('UPDATE_VALIDATION', formatResponse(error));
+    }
+  },
+
+  async activate ({ commit }, code) {
+    try {
+      const response = await Auth.activate(code);
+
+      commit('UPDATE_VALIDATION', formatResponse(response));
+
+      Router.push(LOGIN.path);
+      
+    } catch (error) {
+      commit('UPDATE_VALIDATION', formatResponse(error));
+    }
+  },
+
+  async authorize ({ commit }) {
     try {
       const response = await Auth.authorize();
 

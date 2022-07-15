@@ -1,15 +1,14 @@
 <template>
   <div class="authenthication__wrapper">
-    <div class="authenthication card">
-      <Form class="authenthication__form" ref="form">
+    <div class="authenthication">
+      <ValidationList 
+        class="authenthication__validation"
+        :list="validation.messages"
+        :type="validation.type"
+      />
+      <Form class="authenthication__form card" ref="form">
         <template #title>
           <h1 class="text text--mega text--thick">{{ formSchema.title }}</h1>
-        </template>
-        <template #validation>
-          <ValidationList 
-            :list="validation.messages"
-            :type="validation.type"
-          />
         </template>
         <template #inputs>
           <Input 
@@ -26,7 +25,17 @@
             class="button button--normal button--primary text text--deci text--bold" 
             type="submit"
             @click="handleSubmit($event)"
-            :text="this.formSchema.submit"
+            :text="formSchema.submit"
+          />
+        </template>
+        <template #additional>
+          <Button 
+            v-for="(button, i) in formSchema.additional"
+            type="button"
+            class="button button--link text text--deci" 
+            @click="$router.push(button.redirect)"
+            :text="button.text"
+            :key="i"
           />
         </template>
       </Form>
@@ -53,37 +62,43 @@ export default {
   data () {
     return {
       auth: '',
-      formSchema: [],
+      formSchema: {},
     }
   },
-
-  mounted() {
-    this.auth = this.$route.path.substring(1);
-    this.formSchema = require('@/common/schemas/FormSchemas')[this.auth];
-  },
-
   computed: {
     ...mapState('auth', {
       validation: state => state.validation
     })
   },
 
+  mounted() {
+    this.handleRouteChange();
+  },
+
+  watch: {
+    '$route' (to, from) {
+      if(to !== from) {
+        this.handleRouteChange();
+      }
+    }
+  },
+
   methods: {
-    ...mapActions('auth', {
-      authenthicate: 'auth'
-    }),
+    ...mapActions('auth', ['register', 'login', 'activate']),
+
+    handleRouteChange() {
+      this.auth = this.$route.path.substring(1);
+
+      this.formSchema = require('@/common/schemas/form.schema')[this.auth];
+    },
 
     async handleSubmit(event) {
       event.preventDefault();
       this.validation.messages = [];
-      let user = getFormData(this.$refs.form.$el);
+      const user = getFormData(this.$refs.form.$el);
+      const authType = this.auth;
 
-      const data = {
-        user: user,
-        authType: this.auth
-      }
-
-      await this.authenthicate(data);
+      await this[authType](user);
     }
   }
 }

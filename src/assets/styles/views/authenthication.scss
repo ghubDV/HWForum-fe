@@ -1,11 +1,12 @@
 @use '../components/button';
 @use '../components/card';
 @use '../base/variables/dimensions';
-@use '../base/variables//typography';
+@use '../base/variables/typography';
 
 .authenthication {
   width: dimensions.$authenthicationWidth;
   max-width:100%;
+  position: relative;
 
   &__wrapper {
     min-height: 100vh;
@@ -17,5 +18,15 @@
 
   &__form {
     align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__validation {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(calc(-100% + dimensions.$normalSpacing));
+    z-index: 1;
   }
 }

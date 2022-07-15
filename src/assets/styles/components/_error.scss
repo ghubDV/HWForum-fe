@@ -6,6 +6,12 @@
   width: 100%;
   padding: dimensions.$normalSpacing;
   border-radius: dimensions.$normalRadius;
+
+  &__item {
+    &:last-child {
+      margin-bottom: dimensions.$normalSpacing;
+    }
+  }
 }
 
 .error {
@@ -16,4 +22,14 @@
 .success {
   background-color: colors.$successBackground;
   color: colors.$successText;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }

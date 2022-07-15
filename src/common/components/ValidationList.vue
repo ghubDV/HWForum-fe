@@ -1,9 +1,11 @@
 <template>
-  <div v-if="list.length" :class="type">
-    <div v-for="(item, i) in list" :key="i">
-      {{ item }}
+  <Transition name="fade">
+    <div v-if="list.length" :class="type">
+      <div v-for="(item, i) in list" :class="type + '__item'" :key="i">
+        <pre>{{ item }}</pre>
+      </div>
     </div>
-  </div>
+  </Transition>
 </template>
 
 <script>

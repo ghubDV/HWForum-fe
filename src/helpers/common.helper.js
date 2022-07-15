@@ -7,6 +7,21 @@ const getFormData = (form, result = {}) => {
   return result;
 }
 
+const formatResponse = (res) => {
+  if(res.status !== 200) {
+    return {
+      messages: [res.response.data.message],
+      type: 'error'
+    };
+  }
+
+  return {
+    messages: [res.data.message],
+    type: 'success'
+  };
+}
+
 export {
-  getFormData
+  getFormData,
+  formatResponse
 }

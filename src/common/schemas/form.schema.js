@@ -22,6 +22,12 @@ const register = {
       name: "confirm_password",
       placeholder: "confirm password",
     }
+  ],
+  additional: [  
+    {
+      text: 'Already have an account? Log in!',
+      redirect: '/login'
+    },
   ]
 }
 
@@ -39,6 +45,12 @@ const login = {
       name: "password",
       placeholder: "password",
     },
+  ],
+  additional: [  
+    {
+      text: 'Create an account!',
+      redirect: '/register'
+    }
   ]
 }
 

@@ -4,6 +4,7 @@
     <slot name="validation"></slot>
     <slot name="inputs"></slot>
     <slot name="submit"></slot>
+    <slot name="additional"></slot>
   </form>
 </template>
 
