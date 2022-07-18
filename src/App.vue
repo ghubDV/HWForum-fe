@@ -1,5 +1,6 @@
 <template>
   <div class="main-content">
+    <Navbar />
     <Loader v-show="isLoading" :progress="progress" />
     <div class="content-container">
       <router-view :key="$route.path"/>
@@ -10,16 +11,18 @@
 <script>
   import { mapGetters } from 'vuex';
   import Loader from './common/components/Loader.vue';
+  import Navbar from './common/components/Navbar.vue';
 
   export default {
     components: {
-      Loader
+      Loader,
+      Navbar
     },
 
     computed: {
       ...mapGetters({
-        progress: 'main/getLoaderProgress',
-        isLoading: 'main/getLoaderState'
+        progress: 'common/getLoaderProgress',
+        isLoading: 'common/getLoaderState'
       })
     }
   }

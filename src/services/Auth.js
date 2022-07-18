@@ -6,11 +6,15 @@ export default {
   },
 
   authorize () {
-    return Api().get('checkAuthorization', { withCredentials: true });
+    return Api().get('checkAuthenthication', { withCredentials: true });
   },
 
   login (credentials) {
     return Api().post('login', credentials, { withCredentials: true });
+  },
+
+  logout () {
+    return Api().delete('logout', { withCredentials: true });
   },
 
   register (credentials) {

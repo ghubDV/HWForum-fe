@@ -1,0 +1,21 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/display';
+@use '../base/variables/shadows';
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: colors.$navbarBG;
+  box-shadow: shadows.$bottomShadow;
+  height: dimensions.$navbarHeight;
+  max-height: dimensions.$navbarHeight;
+  padding: 0 dimensions.$smallSpacing;
+}
+
+@media only screen and (min-width: display.$phone) {
+  .navbar {
+    padding: 0 dimensions.$normalSpacing;
+  }
+}

@@ -1,10 +1,10 @@
 import { createStore } from 'vuex';
-import authenthication from './modules/authenthication';
-import main from './modules/main';
+import authenthication from './modules/authenthication.store';
+import common from './modules/common.store';
 
 export default createStore({
   modules: {
-    main: main,
+    common: common,
     auth: authenthication
   }
 })

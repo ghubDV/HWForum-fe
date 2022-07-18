@@ -8,13 +8,15 @@ const HOME = {
 const REGISTER = {
   path: '/register',
   name: 'Register',
-  component: 'Auth'
+  component: 'Auth',
+  noAuth: true
 };
 
 const LOGIN = {
   path: '/login',
   name: 'Login',
-  component: 'Auth'
+  component: 'Auth',
+  noAuth: true
 };
 
 const ACTIVATE = {
@@ -27,7 +29,7 @@ const PROTECTED = {
   path: '/protected',
   name: 'Protected',
   component: 'Protected',
-  protected: true
+  auth: true
 };
 
 export {

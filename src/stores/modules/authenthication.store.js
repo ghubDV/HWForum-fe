@@ -1,7 +1,7 @@
 import Auth from '@/services/Auth';
 import { formatResponse } from '@/helpers/common.helper';
 import Router from '@/routes';
-import { ACTIVATE, LOGIN, PROTECTED } from '@/common/schemas/route.schema';
+import { LOGIN, PROTECTED } from '@/common/schemas/route.schema';
 
 const state = {
   user: {
@@ -18,6 +18,10 @@ const state = {
 const getters = {
   getUserAuth (state) {
     return state.user.isLoggedIn;
+  },
+
+  getValidation (state) {
+    return state.validation;
   }
 }
 
@@ -47,8 +51,6 @@ const actions = {
       const response = await Auth.register(user);
 
       commit('UPDATE_VALIDATION', formatResponse(response));
-
-      Router.push(ACTIVATE.path);
       
     } catch (error) {
       commit('UPDATE_VALIDATION', formatResponse(error));
@@ -67,6 +69,20 @@ const actions = {
       
     } catch (error) {
       commit('UPDATE_VALIDATION', formatResponse(error));
+    }
+  },
+
+  async logout ({ commit }) {
+    try {
+      console.log('oi')
+      await Auth.logout();
+      console.log('don')
+
+      commit('LOG_OUT');
+
+      Router.go();
+    } catch {
+      return;
     }
   },
 

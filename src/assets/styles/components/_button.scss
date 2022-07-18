@@ -28,6 +28,14 @@
     }
   }
 
+  &--simple {
+    border: 0;
+    
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
   &--link {
     border: 0;
     padding: 0;

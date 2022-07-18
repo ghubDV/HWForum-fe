@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import Button from '@/common/components/Button';
 import Form from '@/common/components/Form';
 import Input from '@/common/components/Input';
@@ -66,8 +66,9 @@ export default {
     }
   },
   computed: {
-    ...mapState('auth', {
-      validation: state => state.validation
+    ...mapGetters({
+      validation: 'auth/getValidation',
+      isLoggedIn: 'auth/getUserAuth'
     })
   },
 
@@ -76,9 +77,14 @@ export default {
   },
 
   watch: {
-    '$route' (to, from) {
+    $route (to, from) {
       if(to !== from) {
         this.handleRouteChange();
+      }
+    },
+    isLoggedIn (newValue) {
+      if(newValue) {
+        this.$router.push('/');
       }
     }
   },

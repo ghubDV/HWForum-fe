@@ -40,7 +40,7 @@ const actions = {
   },
 }
 
-const mainStore = {
+const commonStore = {
   namespaced: true,
   state,
   getters,
@@ -48,4 +48,4 @@ const mainStore = {
   actions
 }
 
-export default mainStore;
+export default commonStore;
