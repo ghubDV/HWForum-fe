@@ -44,27 +44,4 @@ const router = createRouter({
   routes: routes()
 })
 
-// router.beforeEach((to, from, next) => {
-//   if(protectedRoutes.includes(to.path)) {
-
-//     if(store.getters['auth/getUserAuth']) {
-//       next();
-//     } else {
-//       next('login')
-//     }
-//   } else if((to.path === '/login' || to.path === '/register')) {
-//     if(to.redirectedFrom && protectedRoutes.includes(to.redirectedFrom.path)) {
-//       next();
-//     } else {
-//       if(store.getters['auth/getUserAuth']) {
-//         next('/');
-//       } else {
-//         next();
-//       }
-//     }
-//   } else {
-//     next();
-//   }
-// })
-
 export default router
