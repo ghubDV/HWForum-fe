@@ -74,9 +74,7 @@ const actions = {
 
   async logout ({ commit }) {
     try {
-      console.log('oi')
       await Auth.logout();
-      console.log('don')
 
       commit('LOG_OUT');
 
