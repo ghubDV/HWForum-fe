@@ -9,6 +9,10 @@ export default {
     return Api().get('checkAuthenthication', { withCredentials: true });
   },
 
+  checkReset (credentials) {
+    return Api().post('checkReset', credentials);
+  },
+
   login (credentials) {
     return Api().post('login', credentials, { withCredentials: true });
   },
@@ -21,7 +25,11 @@ export default {
     return Api().post('register', credentials);
   },
 
-  sendActivationCode (credentials) {
-    return Api().post('/sendActivationCode', credentials);
+  reset (credentials) {
+    return Api().patch('resetPassword', credentials);
+  },
+
+  sendCode (credentials) {
+    return Api().post('sendCode', credentials);
   }
 }

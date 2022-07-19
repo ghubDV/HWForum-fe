@@ -16,7 +16,7 @@
             :type="input.type"
             :name="input.name"
             :placeholder="input.placeholder"
-            :value="input.value ? $route.query.code : null"
+            :value="input.value === true ? $route.query.code : input.value"
             :key="i"
           />
         </template>
@@ -63,6 +63,7 @@ export default {
     return {
       auth: '',
       formSchema: {},
+      validCode: false,
     }
   },
   computed: {
@@ -90,20 +91,36 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', ['register', 'login', 'activate']),
+    ...mapActions('auth', ['register', 'login', 'activate', 'sendCode', 'checkReset', 'reset']),
 
     handleRouteChange() {
-      this.auth = this.$route.path.substring(1);
+      this.auth = this.$route.path.substring(1).split('/')[0];
 
       this.formSchema = require('@/common/schemas/form.schema')[this.auth];
+
+      if(this.auth === 'reset') {
+        if(this.validCode) {
+         this.formSchema = this.formSchema.change;
+        } else if(this.$route.query.code) {
+          this.formSchema = this.formSchema.code;
+        } else {
+          this.formSchema = this.formSchema.send;
+        }
+      }
     },
 
     async handleSubmit(event) {
       event.preventDefault();
-      const user = getFormData(this.$refs.form.$el);
-      const authType = this.auth;
+      const data = getFormData(this.$refs.form.$el);
+      const authType = this.formSchema.action || this.auth;
+      
+      await this[authType](data);
 
-      await this[authType](user);
+      if(authType === 'checkReset') {
+        this.validCode = this.validation.type === 'success';
+
+        this.validCode ? this.$router.push('/reset') : null;
+      }
     }
   }
 }

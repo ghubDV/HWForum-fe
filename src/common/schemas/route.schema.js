@@ -25,6 +25,12 @@ const ACTIVATE = {
   component: 'Auth'
 };
 
+const RESET = {
+  path: '/reset',
+  name: 'Reset',
+  component: 'Auth'
+};
+
 const PROTECTED = {
   path: '/protected',
   name: 'Protected',
@@ -37,5 +43,6 @@ export {
   REGISTER,
   LOGIN,
   ACTIVATE,
+  RESET,
   PROTECTED,
 }

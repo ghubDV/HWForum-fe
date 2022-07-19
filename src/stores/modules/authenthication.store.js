@@ -46,6 +46,11 @@ const mutations = {
     state.user.username = '';
   },
 
+  RESET_VALIDATION (state) {
+    state.validation.messages = [];
+    state.validation.type = '';
+  },
+
   UPDATE_VALIDATION (state, payload) {
     state.validation.messages = [];
     state.validation.type = '';
@@ -53,6 +58,10 @@ const mutations = {
     state.validation.messages = [...payload.messages];
     state.validation.type = payload.type;
   },
+
+  UPDATE_USERNAME (state, payload) {
+    state.user.username = payload;
+  }
 }
 
 const actions = {
@@ -75,6 +84,8 @@ const actions = {
         username: response.data.username
       });
 
+      commit('RESET_VALIDATION');
+
       Router.push(PROTECTED.path);
       
     } catch (error) {
@@ -96,14 +107,57 @@ const actions = {
     }
   },
 
-  async activate ({ commit }, code) {
+  async activate ({ commit }, { code }) {
     try {
-      const response = await Auth.activate(code);
+      const response = await Auth.activate({
+        type: 'activate',
+        code: code
+      });
 
       commit('UPDATE_VALIDATION', formatResponse(response));
 
       Router.push(LOGIN.path);
       
+    } catch (error) {
+      commit('UPDATE_VALIDATION', formatResponse(error));
+    }
+  },
+
+  async reset ({ commit, state }, data) {
+    try {
+      data.username = state.user.username;
+
+      const response = await Auth.reset(data);
+
+      commit('UPDATE_VALIDATION', formatResponse(response));
+
+      Router.push(LOGIN.path);
+      
+    } catch (error) {
+      commit('UPDATE_VALIDATION', formatResponse(error));
+    }
+  },
+
+  async sendCode ({ commit }, type) {
+    try {
+      const response  = await Auth.sendCode(type);
+
+      commit('UPDATE_VALIDATION', formatResponse(response));
+    } catch (error) {
+      commit('UPDATE_VALIDATION', formatResponse(error));
+    }
+  },
+
+  async checkReset ({ commit }, { code }) {
+    try {
+      const response  = await Auth.checkReset({
+        type: 'reset',
+        code: code
+      });
+
+      commit('UPDATE_VALIDATION', formatResponse(response));
+
+      commit('UPDATE_USERNAME', response.data.user);
     } catch (error) {
       commit('UPDATE_VALIDATION', formatResponse(error));
     }
