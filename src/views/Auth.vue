@@ -100,7 +100,6 @@ export default {
 
     async handleSubmit(event) {
       event.preventDefault();
-      this.validation.messages = [];
       const user = getFormData(this.$refs.form.$el);
       const authType = this.auth;
 

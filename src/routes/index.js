@@ -3,7 +3,9 @@ import * as routeSchema from '@/common/schemas/route.schema';
 import * as Views from '@/views';
 import store from '@/stores';
 
-const ifProtected = (to, from, next) => {
+const ifProtected = async (to, from, next) => {
+  await store.dispatch('auth/authorize');
+
   if (store.getters['auth/getUserAuth']) {
     next();
     return;
@@ -11,7 +13,9 @@ const ifProtected = (to, from, next) => {
   next('/login');
 }
 
-const ifNotProtected = (to, from, next) => {
+const ifNotProtected = async (to, from, next) => {
+  await store.dispatch('auth/authorize');
+
   if (!store.getters['auth/getUserAuth']) {
     next();
     return;

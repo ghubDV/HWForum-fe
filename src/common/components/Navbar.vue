@@ -32,28 +32,24 @@ export default {
     Button
   },
 
-  mounted() {
-    this.authorize();
-  },
-
   computed: {
     ...mapGetters({
-      isLoggedIn: 'auth/getUserAuth'
+      isLoggedIn: 'auth/getUserAuth',
+      isAuthInit: 'auth/getAuthInit'
     }),
   },
 
   methods: {
     ...mapActions({
-      authorize: 'auth/authorize',
       logout: 'auth/logout',
     }),
 
     handleAction(actionName) {
-      if(this[actionName]) {
+      if(typeof this[actionName] !== 'undefined') {
         this[actionName]();
       }
     }
-  }
+  },
 }
 </script>
 

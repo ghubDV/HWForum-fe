@@ -4,6 +4,8 @@ import Router from '@/routes';
 import { LOGIN, PROTECTED } from '@/common/schemas/route.schema';
 
 const state = {
+  authInit: false,
+
   user: {
     isLoggedIn: false,
     username: ''
@@ -20,12 +22,20 @@ const getters = {
     return state.user.isLoggedIn;
   },
 
+  getAuthInit (state) {
+    return state.authInit;
+  },
+
   getValidation (state) {
     return state.validation;
   }
 }
 
 const mutations = {
+  AUTH_INIT (state) {
+    state.authInit = true;
+  },
+
   LOG_IN (state, payload) {
     state.user.isLoggedIn = true;
     state.user.username = payload.username;
@@ -72,13 +82,15 @@ const actions = {
     }
   },
 
-  async logout ({ commit }) {
+  async logout ({ commit, state }) {
     try {
-      await Auth.logout();
+      if(state.user.isLoggedIn) {
+        await Auth.logout();
 
-      commit('LOG_OUT');
-
-      Router.go();
+        commit('LOG_OUT');
+  
+        Router.push(LOGIN.path);
+      } 
     } catch {
       return;
     }
@@ -97,7 +109,11 @@ const actions = {
     }
   },
 
-  async authorize ({ commit }) {
+  async authorize ({ commit, state }) {
+    if (!state.authInit) {
+      commit('AUTH_INIT');
+    }
+
     try {
       const response = await Auth.authorize();
 

@@ -22,8 +22,9 @@
     computed: {
       ...mapGetters({
         progress: 'common/getLoaderProgress',
-        isLoading: 'common/getLoaderState'
+        isLoading: 'common/getLoaderState',
+        isAuthInit: 'auth/getAuthInit'
       })
-    }
+    },
   }
 </script>
