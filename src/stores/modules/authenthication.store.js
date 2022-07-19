@@ -22,6 +22,10 @@ const getters = {
     return state.user.isLoggedIn;
   },
 
+  getUsername (state) {
+    return state.user.username;
+  },
+
   getAuthInit (state) {
     return state.authInit;
   },

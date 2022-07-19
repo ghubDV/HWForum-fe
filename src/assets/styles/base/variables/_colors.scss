@@ -3,6 +3,7 @@
 
 //  Gray
 $darkGray: #1E1D23;
+$darkGrayAccent: #2A2931;
 $darkGrayHover: #403f47;
 $davysGray: #4D5057;
 $deepSilver: #8B9094;
@@ -17,12 +18,12 @@ $darkPastelGreen: #3BC14A;
 $fontDefault: #E8EAED;
 
 //  Error
-$errorBackground: rgba(#D8393B, .15);
+$errorBackground: rgba(#D8393B, .2);
 $errorText: #C84448;
 
 //  Success
-$successBackground: rgba(#4BB543, .15);
+$successBackground: rgba(#4BB543, .2);
 $successText: #5ABF52;
 
-//  Navbar
-$navbarBG: #222128;
+//  Button
+$buttonPrimaryHover: #4DA152;

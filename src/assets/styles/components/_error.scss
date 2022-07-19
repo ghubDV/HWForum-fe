@@ -6,6 +6,7 @@
   width: 100%;
   padding: dimensions.$normalSpacing;
   border-radius: dimensions.$normalRadius;
+  font-weight: typography.$boldWeight;
 
   &__item {
     &:last-child {

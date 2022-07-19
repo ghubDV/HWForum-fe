@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar">
     <section class="navbar__left">
-
+      <strong v-show="isLoggedIn" class="text--deci text--bold">
+        Hey, {{ username }}
+      </strong>
     </section>
     <section class="navbar__right">
       <Button
@@ -35,7 +37,8 @@ export default {
   computed: {
     ...mapGetters({
       isLoggedIn: 'auth/getUserAuth',
-      isAuthInit: 'auth/getAuthInit'
+      isAuthInit: 'auth/getAuthInit',
+      username: 'auth/getUsername'
     }),
   },
 

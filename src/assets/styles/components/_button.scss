@@ -24,7 +24,7 @@
     border: 0;
 
     &:hover {
-      background-color: colors.$hookersGreen;
+      background-color: colors.$buttonPrimaryHover;
     }
   }
 
@@ -33,6 +33,7 @@
     
     &:hover {
       background-color: transparent;
+      color: rgba(colors.$fontDefault, .8);
     }
   }
 

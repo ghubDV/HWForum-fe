@@ -4,7 +4,12 @@
 
 .card {
   padding: dimensions.$largeSpacing;
-  background-color: colors.$darkGray;
+  background-color: colors.$darkGrayAccent;
   box-shadow: shadows.$smoothShadow;
   border-radius: dimensions.$largeRadius;
+  transition: box-shadow .3s ease;
+
+  &:hover {
+    box-shadow: shadows.$strongerShadow;
+  }
 }

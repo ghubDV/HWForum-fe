@@ -12,6 +12,10 @@ html, body {
   color: colors.$fontDefault;
 }
 
+html, body, #app {
+  height: 100%;
+}
+
 body {
   background-color: colors.$darkGray;
   overflow-x: hidden;
@@ -24,9 +28,10 @@ body {
 }
 
 .content-container {
+  flex: 1;
   padding: 0 dimensions.$smallSpacing;
 }
 
 .main-content, .content-container {
-  min-height: 100vh;
+  height: 100%;
 }
