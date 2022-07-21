@@ -1,5 +1,5 @@
 <template>
-  <div class="loader" :style="{'width':progress + '%'}"></div>
+  <div :class="'loader loader--' + progress"></div>
 </template>
 
 <script>

@@ -42,8 +42,13 @@ export default {
     }),
   },
 
+  mounted() {
+    this.authorize();
+  },
+
   methods: {
     ...mapActions({
+      authorize: 'auth/authorize',
       logout: 'auth/logout',
     }),
 

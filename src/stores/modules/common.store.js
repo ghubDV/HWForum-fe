@@ -28,7 +28,6 @@ const mutations = {
 const actions = {
   startLoading ({ commit }) {
     commit('SET_LOADING', true);
-    commit('SET_PROGRESS', 1);
     commit('SET_PROGRESS', 25);
   },
 

@@ -101,7 +101,7 @@ export default {
       if(this.auth === 'reset') {
         if(this.validCode) {
          this.formSchema = this.formSchema.change;
-        } else if(this.$route.query.code) {
+        } else if(this.$route.query.code !== undefined) {
           this.formSchema = this.formSchema.code;
         } else {
           this.formSchema = this.formSchema.send;

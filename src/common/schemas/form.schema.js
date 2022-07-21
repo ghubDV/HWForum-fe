@@ -87,6 +87,12 @@ const reset = {
         placeholder: "email"
       },
     ],
+    additional: [
+      {
+        text: 'Enter a reset code!',
+        redirect: '/reset?code='
+      }
+    ],
     action: 'sendCode'
   },
 

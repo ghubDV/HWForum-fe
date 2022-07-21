@@ -4,7 +4,28 @@
 .loader {
   position: fixed;
   top: 0;
+  width: 100%;
   height: dimensions.$loaderHeight;
   background-color: colors.$forestGreen;
-  transition: width .5s ease;
+  transition: transform .5s ease;
+
+  &--0 {
+    transform: translateX(-100%);
+  }
+
+  &--25 {
+    transform: translateX(-75%);
+  }
+
+  &--50 {
+    transform: translateX(-50%);
+  }
+
+  &--75 {
+    transform: translateX(-25%);
+  }
+
+  &--100 {
+    transform: translateX(0%);
+  }
 }
