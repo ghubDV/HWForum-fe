@@ -14,6 +14,8 @@ const ifProtected = async (to, from, next) => {
 }
 
 const ifNotProtected = async (to, from, next) => {
+  await store.dispatch('auth/authorize');
+  
   if (!store.getters['auth/getUserAuth']) {
     next();
     return;

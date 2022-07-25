@@ -6,7 +6,11 @@
         :list="validation.messages"
         :type="validation.type"
       />
-      <Form class="authenthication__form card" ref="form">
+      <Form 
+        class="authenthication__form card" 
+        ref="form"
+        @submit.prevent="handleSubmit($event)"
+      >
         <template #title>
           <h1 class="text text--mega text--thick">{{ formSchema.title }}</h1>
         </template>
@@ -24,7 +28,6 @@
           <Button 
             class="button button--normal button--primary text text--deci text--bold" 
             type="submit"
-            @click="handleSubmit($event)"
             :text="formSchema.submit"
           />
         </template>
@@ -44,7 +47,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import Button from '@/common/components/Button';
 import Form from '@/common/components/Form';
 import Input from '@/common/components/Input';
@@ -63,29 +66,37 @@ export default {
     return {
       auth: '',
       formSchema: {},
+      validation: {
+        messages: [],
+        type: '',
+      },
       validCode: false,
     }
-  },
-  computed: {
-    ...mapGetters({
-      validation: 'auth/getValidation',
-      isLoggedIn: 'auth/getUserAuth'
-    })
   },
 
   mounted() {
     this.handleRouteChange();
+
+    switch (this.$route.query.success) {
+      case 'activate':
+        this.validation = {
+          messages: ['Account activated successfully!'],
+          type: 'success'
+        };
+        break;
+      case 'reset':
+        this.validation = {
+          messages: ['Password reset was successful!'],
+          type: 'success'
+        };
+        break;
+    }
   },
 
   watch: {
     $route (to, from) {
       if(to !== from) {
         this.handleRouteChange();
-      }
-    },
-    isLoggedIn (newValue) {
-      if(newValue) {
-        this.$router.push('/');
       }
     }
   },
@@ -109,12 +120,15 @@ export default {
       }
     },
 
-    async handleSubmit(event) {
-      event.preventDefault();
+    async handleSubmit() {
       const data = getFormData(this.$refs.form.$el);
       const authType = this.formSchema.action || this.auth;
       
-      await this[authType](data);
+      const response = await this[authType](data);
+
+      if(response) {
+        this.validation = {...response};
+      }
 
       if(authType === 'checkReset') {
         this.validCode = this.validation.type === 'success';

@@ -10,7 +10,7 @@ const getFormData = (form, result = {}) => {
 const formatResponse = (res) => {
   if(res.status !== 200) {
     return {
-      messages: [res.response.data.message],
+      messages: res.response.data.map( err => err.message ),
       type: 'error'
     };
   }

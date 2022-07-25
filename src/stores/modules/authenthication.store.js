@@ -10,11 +10,6 @@ const state = {
     isLoggedIn: false,
     username: ''
   },
-
-  validation: {
-    messages: [],
-    type: '',
-  }
 }
 
 const getters = {
@@ -29,10 +24,6 @@ const getters = {
   getAuthInit (state) {
     return state.authInit;
   },
-
-  getValidation (state) {
-    return state.validation;
-  }
 }
 
 const mutations = {
@@ -50,33 +41,20 @@ const mutations = {
     state.user.username = '';
   },
 
-  RESET_VALIDATION (state) {
-    state.validation.messages = [];
-    state.validation.type = '';
-  },
-
-  UPDATE_VALIDATION (state, payload) {
-    state.validation.messages = [];
-    state.validation.type = '';
-
-    state.validation.messages = [...payload.messages];
-    state.validation.type = payload.type;
-  },
-
   UPDATE_USERNAME (state, payload) {
     state.user.username = payload;
   }
 }
 
 const actions = {
-  async register ({ commit }, user) {
+  async register (_ctx, user) {
     try {
       const response = await Auth.register(user);
 
-      commit('UPDATE_VALIDATION', formatResponse(response));
+      return formatResponse(response);
       
     } catch (error) {
-      commit('UPDATE_VALIDATION', formatResponse(error));
+      return formatResponse(error);
     }
   },
 
@@ -88,12 +66,10 @@ const actions = {
         username: response.data.username
       });
 
-      commit('RESET_VALIDATION');
-
       Router.push(PROTECTED.path);
       
     } catch (error) {
-      commit('UPDATE_VALIDATION', formatResponse(error));
+      return formatResponse(error);
     }
   },
 
@@ -111,44 +87,46 @@ const actions = {
     }
   },
 
-  async activate ({ commit }, { code }) {
+  async activate (_ctx, { code }) {
     try {
-      const response = await Auth.activate({
+      await Auth.activate({
         type: 'activate',
         code: code
       });
-
-      commit('UPDATE_VALIDATION', formatResponse(response));
-
-      Router.push(LOGIN.path);
+      
+      Router.push({
+        path: LOGIN.path,
+        query: { success: 'activate' }
+      });
       
     } catch (error) {
-      commit('UPDATE_VALIDATION', formatResponse(error));
+      return formatResponse(error);
     }
   },
 
-  async reset ({ commit, state }, data) {
+  async reset ({ state }, data) {
     try {
       data.username = state.user.username;
 
-      const response = await Auth.reset(data);
-
-      commit('UPDATE_VALIDATION', formatResponse(response));
-
-      Router.push(LOGIN.path);
+      await Auth.reset(data);
+      
+      Router.push({
+        path: LOGIN.path,
+        query: { success: 'reset' }
+      });
       
     } catch (error) {
-      commit('UPDATE_VALIDATION', formatResponse(error));
+      return formatResponse(error);
     }
   },
 
-  async sendCode ({ commit }, type) {
+  async sendCode (_ctx, data) {
     try {
-      const response  = await Auth.sendCode(type);
+      const response  = await Auth.sendCode(data);
 
-      commit('UPDATE_VALIDATION', formatResponse(response));
+      return formatResponse(response);
     } catch (error) {
-      commit('UPDATE_VALIDATION', formatResponse(error));
+      return formatResponse(error);
     }
   },
 
@@ -159,11 +137,11 @@ const actions = {
         code: code
       });
 
-      commit('UPDATE_VALIDATION', formatResponse(response));
-
       commit('UPDATE_USERNAME', response.data.user);
+
+      return formatResponse(response);
     } catch (error) {
-      commit('UPDATE_VALIDATION', formatResponse(error));
+      return formatResponse(error);
     }
   },
 
@@ -178,6 +156,7 @@ const actions = {
       commit('LOG_IN', {
         username: response.data.username
       });
+
     } catch {
       commit('LOG_OUT');
     }
