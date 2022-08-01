@@ -31,6 +31,13 @@ const RESET = {
   component: 'Auth'
 };
 
+const PROFILE = {
+  path: '/profile',
+  name: 'Profile',
+  component: 'Profile',
+  auth: true
+}
+
 const PROTECTED = {
   path: '/protected',
   name: 'Protected',
@@ -44,5 +51,6 @@ export {
   LOGIN,
   ACTIVATE,
   RESET,
+  PROFILE,
   PROTECTED,
 }

@@ -4,11 +4,5 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: dimensions.$smallSpacing;
-}
-
-@media only screen and (min-width: display.$desktop) {
-  .form {
-    gap: dimensions.$normalSpacing;
-  }
+  gap: dimensions.$mediumSpacing;
 }

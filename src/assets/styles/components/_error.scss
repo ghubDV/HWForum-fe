@@ -13,6 +13,14 @@
       margin-bottom: dimensions.$normalSpacing;
     }
   }
+
+  &.no-margin {
+    .success__item, .error__item {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 .error {

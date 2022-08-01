@@ -21,7 +21,7 @@ instance.interceptors.response.use(function (response) {
   }
   return response;
 }, function (error) {
-  if(error.response.status === 401 && error.config && error.config.url === 'checkAuthenthication') {
+  if(error.response.status === 401 && error.config) {
     store.dispatch('auth/logout');
   }
   if(requireLoader.includes(error.response.config.url)) {

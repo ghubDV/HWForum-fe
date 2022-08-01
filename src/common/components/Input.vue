@@ -1,6 +1,18 @@
 <template>
   <div class="input__wrapper">
+    <label class="input__wrapper--checkbox" v-if="label">
+      <input 
+        :class="'input' + (extraClass ? extraClass : '')"
+        :type="type" 
+        :name="name"
+        :placeholder="placeholder"
+        :value="value ? value : null"
+      />
+      <p class="text--bold text--deci">{{ label }}</p>
+    </label>
+
     <input 
+      v-else
       :class="'input' + (extraClass ? extraClass : '')"
       :type="type" 
       :name="name"
@@ -16,9 +28,10 @@ export default {
     extraClass: String,
     type: String,
     name: String,
+    label: String,
     placeholder: String,
     value: String
-  }
+  },
 }
 </script>
 

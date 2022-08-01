@@ -128,9 +128,48 @@ const reset = {
   }
 }
 
+const profile = {
+  title: "Your profile details",
+  submit: {
+    create: {
+      name: "create profile",
+      action: "createProfile"
+    },
+    update: {
+      name: "update profile",
+      action: "updateProfile",
+    }
+  },
+  inputs: [
+    {
+      type: "text",
+      name: "profileName",
+      placeholder: "profile name",
+      required: true
+    },
+    {
+      type: "text",
+      name: "firstName",
+      placeholder: "first name",
+    },
+    {
+      type: "text",
+      name: "lastName",
+      placeholder: "last name",
+    },
+    {
+      type: "checkbox",
+      name: "isPublic",
+      label: "Make my profile public",
+      extraClass: " input--checkbox"
+    }
+  ]
+}
+
 export {
   register,
   reset,
   login,
-  activate
+  activate,
+  profile
 }

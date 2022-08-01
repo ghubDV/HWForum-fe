@@ -1,9 +1,11 @@
 import Auth from './Auth.vue';
-import Protected from './Protected.vue';
 import Home from './Home.vue';
+import Profile from './Profile.vue';
+import Protected from './Protected.vue';
 
 export {
   Auth,
+  Home,
+  Profile,
   Protected,
-  Home
 }

@@ -19,6 +19,42 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+
+    &--checkbox {
+      display: flex;
+      align-items: center;
+      gap: dimensions.$normalSpacing;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &--checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+
+    position: relative;
+    width: dimensions.$normalSpacing;
+    height: dimensions.$normalSpacing;
+    border: 2px solid;
+    border-radius: calc(dimensions.$smallSpacing / 2);
+
+    &::before {
+      content: "";
+      position: absolute;
+      transform: scale(0);
+      transition: .1s transform ease-in-out;
+      background-color: colors.$forestGreen;
+      inset: .2rem;
+    }
+
+    &:checked::before {
+      transform: scale(1);
+    }
   }
 }
 
