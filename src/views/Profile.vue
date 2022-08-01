@@ -80,12 +80,21 @@
     },  
 
     methods: {
-      ...mapActions('profile', ['createProfile', 'getProfile']),
+      ...mapActions('profile', ['createProfile', 'getProfile', 'updateProfile']),
 
-      async handleSubmit(e) {
-        console.log(e.target)
+      async handleSubmit() {
         const data = getFormData(this.$refs.form.$el);
-        const response = await this.createProfile(data);
+        let response;
+
+        if(!this.profile.exists) {
+          response = await this.createProfile(data);
+          if(response.type === 'success') {
+            this.profile.exists = true,
+            this.profile.data = {...data};
+          }
+        } else {
+          response = await this.updateProfile(data);
+        }
 
         if(response) {
           this.validation = {...response};

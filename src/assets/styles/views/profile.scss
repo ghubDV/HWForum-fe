@@ -5,6 +5,7 @@
 .profile {
   background-color: colors.$darkGrayAccent;
   padding: dimensions.$mediumSpacing;
+  border-radius: dimensions.$largeRadius;
 
   &__submit {
     text-align: center;

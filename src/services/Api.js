@@ -5,7 +5,14 @@ const instance = axios.create({
   baseURL: 'http://localhost:4000/'
 })
 
-const requireLoader = ['register', 'login', 'logout', 'sendCode'];
+const requireLoader = [
+  'register', 
+  'login', 
+  'logout', 
+  'sendCode',
+  'createProfile',
+  'updateProfile'
+];
 
 instance.interceptors.request.use(function (config) {
   if(requireLoader.includes(config.url)) {

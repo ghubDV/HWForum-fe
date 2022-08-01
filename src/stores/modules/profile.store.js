@@ -28,6 +28,16 @@ const actions = {
     } catch (error) {
       return formatResponse(error);
     }
+  },
+
+  async updateProfile(_ctx, profile) {
+    try {
+      const response = await Profile.updateProfile(profile);
+
+      return formatResponse(response);
+    } catch (error) {
+      return formatResponse(error);
+    }
   }
 }
 

@@ -7,5 +7,9 @@ export default {
 
   getProfile() {
     return Api().get('getProfile', { withCredentials: true });
+  },
+
+  updateProfile(credentials) {
+    return Api().patch('updateProfile', credentials , { withCredentials: true })
   }
 }
