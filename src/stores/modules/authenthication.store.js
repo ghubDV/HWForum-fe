@@ -40,13 +40,15 @@ const mutations = {
     state.user.isLoggedIn = true;
     state.user.username = payload.username;
     if(!state.user.avatar) {
-      state.user.avatar = getAvatarColor();
+      state.user.avatar = localStorage.getItem('avatar') || getAvatarColor();
     }
   },
 
   LOG_OUT (state) {
     state.user.isLoggedIn = false;
     state.user.username = '';
+    state.user.avatar = '';
+    localStorage.removeItem('avatar');
   },
 
   UPDATE_USERNAME (state, payload) {
@@ -69,6 +71,8 @@ const actions = {
   async login ({ commit }, user) {
     try {
       const response = await Auth.login(user);
+
+      localStorage.setItem('avatar', getAvatarColor());
 
       commit('LOG_IN', {
         username: response.data.username

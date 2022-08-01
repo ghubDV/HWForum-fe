@@ -4,6 +4,7 @@
       <div 
         v-show="isLoggedIn" 
         class="avatar text--deca text--bold" 
+        @click="$router.push('/profile')"
         :style="{ backgroundColor: avatar }"
       >
         {{ username ? username[0].toUpperCase() : null }}
@@ -41,15 +42,24 @@ export default {
   computed: {
     ...mapGetters({
       isLoggedIn: 'auth/getUserAuth',
-      isAuthInit: 'auth/getAuthInit',
+      authInit: 'auth/getAuthInit',
       username: 'auth/getUsername',
       avatar: 'auth/getAvatar'
     }),
   },
 
+  watch: {
+    async $route () {
+      if(!this.$route.meta.requiresAuth && !this.authInit) {
+        await this.authorize();
+      }
+    }
+  },  
+
   methods: {
     ...mapActions({
-      logout: 'auth/logout',
+      authorize: 'auth/authorize',
+      logout: 'auth/logout'
     }),
 
     handleAction(actionName) {

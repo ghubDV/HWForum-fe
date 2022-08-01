@@ -36,6 +36,10 @@ const routes = () => {
     if(route.noAuth) {
       route.beforeEnter = ifNotProtected;
     }
+
+    route.meta = {
+      requiresAuth: route.auth || route.noAuth || false
+    };
     
     routeCollection.push(route);
   }
