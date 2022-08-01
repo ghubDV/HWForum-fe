@@ -20,6 +20,15 @@ const actions = {
       return formatResponse(error);
     }
   },
+
+  async getProfile() {
+    try {
+      const response = await Profile.getProfile()
+      return response.data.profile;
+    } catch (error) {
+      return formatResponse(error);
+    }
+  }
 }
 
 const profileStore = {

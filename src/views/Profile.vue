@@ -16,11 +16,12 @@
       </template>
       <template #inputs>
         <div v-for="(input, i) in profileSchema.inputs" :key="i">
-          <Input 
+          <Input
             :extraClass="input.extraClass || ''"
             :label="input.label"
             :type="input.type"
             :name="input.name"
+            :value="profile.data[input.name]"
             :placeholder="input.placeholder"
           />
         </div>
@@ -30,7 +31,7 @@
           <Button 
             class="button button--normal button--primary text text--deci text--bold" 
             type="submit"
-            :text="profileSchema.submit.create.name"
+            :text="profile.exists ? profileSchema.submit.update.name : profileSchema.submit.create.name"
           />
         </div>
       </template>
@@ -58,6 +59,10 @@
     data() {
       return {
         profileSchema: profile,
+        profile: {
+          exists: false,
+          data: {}
+        },
         validation: {
           messages: [],
           type: '',
@@ -65,15 +70,22 @@
       }
     },
 
+    async mounted() {
+      const profile = await this.getProfile();
+
+      if(profile !== null) {
+        this.profile.exists = true;
+        this.profile.data = {...profile};
+      }
+    },  
+
     methods: {
-      ...mapActions('profile', ['createProfile']),
+      ...mapActions('profile', ['createProfile', 'getProfile']),
 
       async handleSubmit(e) {
         console.log(e.target)
         const data = getFormData(this.$refs.form.$el);
         const response = await this.createProfile(data);
-
-        console.log(response)
 
         if(response) {
           this.validation = {...response};

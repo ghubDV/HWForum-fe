@@ -6,7 +6,7 @@
         :type="type" 
         :name="name"
         :placeholder="placeholder"
-        :value="value ? value : null"
+        :checked="value ? true : false"
       />
       <p class="text--bold text--deci">{{ label }}</p>
     </label>
@@ -30,7 +30,9 @@ export default {
     name: String,
     label: String,
     placeholder: String,
-    value: String
+    value: {
+      type: [String, Boolean]
+    },
   },
 }
 </script>
