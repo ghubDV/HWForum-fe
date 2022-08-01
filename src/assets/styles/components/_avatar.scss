@@ -1,0 +1,9 @@
+@use '../base/variables/dimensions';
+
+.avatar {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  width: dimensions.$largeSpacing;
+  height: dimensions.$largeSpacing;
+}

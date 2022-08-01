@@ -21,7 +21,24 @@ const formatResponse = (res) => {
   };
 }
 
+const getAvatarColor = () => {
+  let color = "#";
+    
+  for(let i = 0; i<6; i++) {
+    let random;
+    if(i%2 === 0) {
+      random = Math.floor(Math.random()*8);
+    } else {
+      random = Math.floor(Math.random()*16);
+    }
+     color += random.toString(16);
+  }
+  
+  return color;
+}
+
 export {
   getFormData,
-  formatResponse
+  formatResponse,
+  getAvatarColor
 }

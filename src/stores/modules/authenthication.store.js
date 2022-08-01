@@ -1,5 +1,5 @@
 import Auth from '@/services/Auth';
-import { formatResponse } from '@/helpers/common.helper';
+import { formatResponse, getAvatarColor } from '@/helpers/common.helper';
 import Router from '@/routes';
 import { LOGIN, PROTECTED } from '@/common/schemas/route.schema';
 
@@ -8,7 +8,8 @@ const state = {
 
   user: {
     isLoggedIn: false,
-    username: ''
+    username: '',
+    avatar: ''
   },
 }
 
@@ -19,6 +20,10 @@ const getters = {
 
   getUsername (state) {
     return state.user.username;
+  },
+
+  getAvatar (state) {
+    return state.user.avatar;
   },
 
   getAuthInit (state) {
@@ -34,6 +39,9 @@ const mutations = {
   LOG_IN (state, payload) {
     state.user.isLoggedIn = true;
     state.user.username = payload.username;
+    if(!state.user.avatar) {
+      state.user.avatar = getAvatarColor();
+    }
   },
 
   LOG_OUT (state) {

@@ -2,6 +2,7 @@
 @use '../base/variables/dimensions';
 @use '../base/variables/display';
 @use '../base/variables/shadows';
+@use '../components/avatar';
 
 .navbar {
   display: flex;

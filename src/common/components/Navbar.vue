@@ -1,9 +1,13 @@
 <template>
   <nav class="navbar">
     <section class="navbar__left">
-      <strong v-show="isLoggedIn" class="text--deci text--bold">
-        Hey, {{ username }}
-      </strong>
+      <div 
+        v-show="isLoggedIn" 
+        class="avatar text--deca text--bold" 
+        :style="{ backgroundColor: avatar }"
+      >
+        {{ username ? username[0].toUpperCase() : null }}
+      </div>
     </section>
     <section class="navbar__right">
       <Button
@@ -38,7 +42,8 @@ export default {
     ...mapGetters({
       isLoggedIn: 'auth/getUserAuth',
       isAuthInit: 'auth/getAuthInit',
-      username: 'auth/getUsername'
+      username: 'auth/getUsername',
+      avatar: 'auth/getAvatar'
     }),
   },
 
