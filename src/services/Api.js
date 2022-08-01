@@ -31,6 +31,11 @@ instance.interceptors.response.use(function (response) {
   if(error.response.status === 401 && error.config) {
     store.dispatch('auth/logout');
   }
+  if(error.response.status === 403 && error.config) {
+    store.dispatch('auth/logout', {
+      redirect: true
+    });
+  }
   if(requireLoader.includes(error.response.config.url)) {
     store.dispatch('common/finishLoading')
   }

@@ -4,7 +4,9 @@ import * as Views from '@/views';
 import store from '@/stores';
 
 const ifProtected = async (to, from, next) => {
-  await store.dispatch('auth/authorize');
+  if(!store.getters['auth/getAuthInit']) {
+    await store.dispatch('auth/authorize');
+  }
 
   if (store.getters['auth/getUserAuth']) {
     next();
@@ -14,7 +16,9 @@ const ifProtected = async (to, from, next) => {
 }
 
 const ifNotProtected = async (to, from, next) => {
-  await store.dispatch('auth/authorize');
+  if(!store.getters['auth/getAuthInit']) {
+    await store.dispatch('auth/authorize');
+  }
   
   if (!store.getters['auth/getUserAuth']) {
     next();

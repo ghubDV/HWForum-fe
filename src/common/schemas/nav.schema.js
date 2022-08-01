@@ -9,10 +9,6 @@ export default isLoggedIn => {
     {
       text: 'Home',
       redirect: '/'
-    },
-    {
-      text: 'Protected',
-      redirect: '/protected'
     }
   ] 
   :

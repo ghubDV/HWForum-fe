@@ -38,13 +38,6 @@ const PROFILE = {
   auth: true
 }
 
-const PROTECTED = {
-  path: '/protected',
-  name: 'Protected',
-  component: 'Protected',
-  auth: true
-};
-
 export {
   HOME,
   REGISTER,
@@ -52,5 +45,4 @@ export {
   ACTIVATE,
   RESET,
   PROFILE,
-  PROTECTED,
 }

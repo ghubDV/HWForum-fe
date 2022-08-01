@@ -1,16 +1,27 @@
 <template>
   <nav class="navbar">
-    <section class="navbar__left">
+    <section class="navbar__left"></section>
+    <section class="navbar__right">
       <div 
-        v-show="isLoggedIn" 
+        v-if="isLoggedIn" 
         class="avatar text--deca text--bold" 
         @click="$router.push('/profile')"
         :style="{ backgroundColor: avatar }"
       >
         {{ username ? username[0].toUpperCase() : null }}
       </div>
+      <div 
+        v-else
+        @click="$router.push('/login')"
+      >
+        <RenderSVG icon="account" />
+      </div>
+
+      <Menu>
+
+      </Menu>
     </section>
-    <section class="navbar__right">
+    <!-- <section class="navbar__right">
       <Button
         v-for="(item, i) in navigation(isLoggedIn)"
         class="button button--simple"
@@ -19,14 +30,16 @@
         @click="item.redirect ? $router.push(item.redirect) : handleAction(item.action)" 
         :key="i"
       />
-    </section>
+    </section> -->
   </nav>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import navigationList from '../schemas/nav.schema';
-import Button from './Button.vue';
+import Menu from '../components/Menu.vue';
+import RenderSVG from '../components/Svg.vue';
+// import Button from './Button.vue';
 
 export default {
   data() {
@@ -36,7 +49,8 @@ export default {
   }, 
 
   components: {
-    Button
+    Menu,
+    RenderSVG
   },
 
   computed: {

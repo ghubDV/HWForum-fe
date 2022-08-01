@@ -1,7 +1,7 @@
 import Auth from '@/services/Auth';
 import { formatResponse, getAvatarColor } from '@/helpers/common.helper';
 import Router from '@/routes';
-import { LOGIN, PROTECTED } from '@/common/schemas/route.schema';
+import { LOGIN, PROFILE } from '@/common/schemas/route.schema';
 
 const state = {
   authInit: false,
@@ -78,22 +78,24 @@ const actions = {
         username: response.data.username
       });
 
-      Router.push(PROTECTED.path);
+      Router.push(PROFILE.path);
       
     } catch (error) {
       return formatResponse(error);
     }
   },
 
-  async logout ({ commit, state }) {
+  async logout ({ commit, state }, redirect) {
     try {
       if(state.user.isLoggedIn) {
         await Auth.logout();
 
         commit('LOG_OUT');
-  
+      }
+
+      if(redirect) {
         Router.push(LOGIN.path);
-      } 
+      }
     } catch {
       return;
     }
