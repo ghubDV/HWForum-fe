@@ -13,6 +13,10 @@
   height: dimensions.$navbarHeight;
   max-height: dimensions.$navbarHeight;
   padding: 0 dimensions.$smallSpacing;
+
+  &__left, &__right {
+    position: relative;
+  }
 }
 
 @media only screen and (min-width: display.$phone) {

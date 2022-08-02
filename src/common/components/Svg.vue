@@ -1,5 +1,5 @@
 <template>
-  <img :src="asset" />
+  <img class="icon" :src="asset" />
 </template>
 
 <script>
@@ -20,6 +20,6 @@
   }
 </script>
 
-<style>
-
+<style lang="scss">
+  @use '../../assets/styles/components/icon';
 </style>

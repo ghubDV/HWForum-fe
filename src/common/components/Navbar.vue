@@ -1,36 +1,51 @@
 <template>
   <nav class="navbar">
-    <section class="navbar__left"></section>
+    <section class="navbar__left">
+      <router-link to="/">
+        <img src="../../assets/icons/logo/logo.png" />
+      </router-link>
+    </section>
+
     <section class="navbar__right">
       <div 
         v-if="isLoggedIn" 
         class="avatar text--deca text--bold" 
-        @click="$router.push('/profile')"
+        @click="toggleMenu"
         :style="{ backgroundColor: avatar }"
       >
         {{ username ? username[0].toUpperCase() : null }}
       </div>
+      
       <div 
         v-else
         @click="$router.push('/login')"
       >
         <RenderSVG icon="account" />
       </div>
-
-      <Menu>
-
+      <Menu v-show="showMenu">
+        <template #list>
+          <div class="menu__list">
+            <div 
+              v-for="(item, i) in navigation(isLoggedIn)"
+              class="menu__list-item"
+              :key="i"
+            >
+              <RenderSVG 
+                v-if="item.icon"
+                :icon="item.icon" 
+                class="icon--small"
+              />
+              <Button
+                class="menu__item button button--simple-green button--no-padding text text--bold"
+                :text="item.text"
+                type="button"
+                @click="handleMenuClick(item)" 
+              />
+            </div>
+          </div>
+        </template>
       </Menu>
     </section>
-    <!-- <section class="navbar__right">
-      <Button
-        v-for="(item, i) in navigation(isLoggedIn)"
-        class="button button--simple"
-        :text="item.text"
-        type="button"
-        @click="item.redirect ? $router.push(item.redirect) : handleAction(item.action)" 
-        :key="i"
-      />
-    </section> -->
   </nav>
 </template>
 
@@ -39,16 +54,18 @@ import { mapGetters, mapActions } from 'vuex'
 import navigationList from '../schemas/nav.schema';
 import Menu from '../components/Menu.vue';
 import RenderSVG from '../components/Svg.vue';
-// import Button from './Button.vue';
+import Button from './Button.vue';
 
 export default {
   data() {
     return {
-      navigation: navigationList
+      navigation: navigationList,
+      showMenu: false
     }
   }, 
 
   components: {
+    Button,
     Menu,
     RenderSVG
   },
@@ -75,6 +92,20 @@ export default {
       authorize: 'auth/authorize',
       logout: 'auth/logout'
     }),
+
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    },
+
+    handleMenuClick(item) {
+      if(item.redirect) {
+        this.$router.push(item.redirect);
+      } else {
+        this.handleAction(item.action);
+      }
+
+      this.showMenu = false;
+    },
 
     handleAction(actionName) {
       if(typeof this[actionName] !== 'undefined') {

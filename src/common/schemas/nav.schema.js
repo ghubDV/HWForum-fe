@@ -3,12 +3,14 @@ export default isLoggedIn => {
   ? 
   [
     {
-      text: 'Logout',
-      action: 'logout',
+      text: 'Profile',
+      redirect: '/profile',
+      icon: 'settings'
     },
     {
-      text: 'Home',
-      redirect: '/'
+      text: 'Logout',
+      action: 'logout',
+      icon: 'logout'
     }
   ] 
   :

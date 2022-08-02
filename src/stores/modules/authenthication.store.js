@@ -1,7 +1,7 @@
 import Auth from '@/services/Auth';
 import { formatResponse, getAvatarColor } from '@/helpers/common.helper';
 import Router from '@/routes';
-import { LOGIN, PROFILE } from '@/common/schemas/route.schema';
+import { HOME, LOGIN } from '@/common/schemas/route.schema';
 
 const state = {
   authInit: false,
@@ -78,7 +78,7 @@ const actions = {
         username: response.data.username
       });
 
-      Router.push(PROFILE.path);
+      Router.push(HOME.path);
       
     } catch (error) {
       return formatResponse(error);
@@ -95,6 +95,8 @@ const actions = {
 
       if(redirect) {
         Router.push(LOGIN.path);
+      } else {
+        Router.push(HOME.path);
       }
     } catch {
       return;

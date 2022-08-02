@@ -1,0 +1,8 @@
+@use '../base/variables/dimensions';
+
+.icon {
+  &--small {
+    width: dimensions.$iconSmall;
+    height: dimensions.$iconSmall;
+  }
+}

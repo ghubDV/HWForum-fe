@@ -1,9 +1,11 @@
 <template>
-  <section v-show="show" class="menu">
-    <slot name="header"></slot>
-    <slot name="list"></slot>
-    <slot name="footer"></slot>
-  </section>
+  <Transition name="fade">
+    <section class="menu">
+      <slot name="header"></slot>
+      <slot name="list"></slot>
+      <slot name="footer"></slot>
+    </section>
+  </Transition>
 </template>
 
 <script>

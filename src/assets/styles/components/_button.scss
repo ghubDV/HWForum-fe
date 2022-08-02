@@ -37,6 +37,15 @@
     }
   }
 
+  &--simple-green {
+    border: 0;
+
+    &:hover {
+      background-color: transparent;
+      color: colors.$forestGreen;
+    }
+  }
+
   &--link {
     border: 0;
     padding: 0;
@@ -46,5 +55,9 @@
       text-decoration: underline;
       background-color: transparent;
     }
+  }
+
+  &--no-padding {
+    padding: 0;
   }
 }

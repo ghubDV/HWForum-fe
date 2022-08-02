@@ -1,0 +1,42 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/shadows';
+
+
+.menu {
+  position: absolute;
+  top: calc(100% + dimensions.$normalSpacing);
+  right:0;
+  min-width: calc(dimensions.$hugeSpacing * 4);
+  padding: dimensions.$normalSpacing;
+  border-radius: dimensions.$normalRadius;
+  box-shadow: shadows.$strongerShadow;
+  background-color: colors.$darkGrayAccentLight;
+
+  &__header {
+    padding-bottom: dimensions.$normalSpacing;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: dimensions.$normalSpacing;
+
+    &-item {
+      display: flex;
+      justify-content: center;
+      gap: dimensions.$smallSpacing
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
