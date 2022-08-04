@@ -1,20 +1,6 @@
-@use '../base/variables/colors';
-@use '../base/variables/dimensions';
-@use '../base/variables/display';
-
 .profile {
-  background-color: colors.$darkGrayAccent;
-  padding: dimensions.$mediumSpacing;
-  border-radius: dimensions.$largeRadius;
-
   &__submit {
     text-align: center;
-  }
-}
-
-@media only screen and (min-width: display.$desktop) {
-  .profile {
-    padding: dimensions.$largeSpacing;
   }
 }
 

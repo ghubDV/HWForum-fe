@@ -1,5 +1,7 @@
+@use '../base/variables/borders';
 @use '../base/variables/colors';
 @use '../base/variables/dimensions';
+@use '../base/variables/display';
 @use '../base/variables/shadows';
 
 .card {
@@ -8,6 +10,37 @@
   box-shadow: shadows.$smoothShadow;
   border-radius: dimensions.$largeRadius;
   transition: box-shadow .3s ease;
+
+  &--small-padding {
+    padding: dimensions.$normalSpacing;
+  }
+
+  &__header {
+    padding-bottom: dimensions.$mediumSpacing;
+    border-bottom: borders.$darkishGrayThick;
+  }
+
+  &__item {
+    padding: dimensions.$normalSpacing 0;
+    display: flex;
+    gap: dimensions.$smallSpacing;
+    border-bottom: borders.$darkishGray;
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  &__icon {
+    background-color: colors.$forestGreen;
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
   &:hover {
     box-shadow: shadows.$strongerShadow;

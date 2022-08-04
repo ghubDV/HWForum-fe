@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile content">
     <Form
       @submit.prevent="handleSubmit"
       ref="form"

@@ -1,15 +1,15 @@
 <template>
   <nav class="navbar">
     <section class="navbar__left">
-      <router-link to="/">
-        <img src="../../assets/icons/logo/logo.png" />
+      <router-link class="link--simple" to="/">
+        <h1 class="text--mega text--bold">HWForum</h1>
       </router-link>
     </section>
 
     <section class="navbar__right">
       <div 
         v-if="isLoggedIn" 
-        class="avatar text--deca text--bold" 
+        class="avatar avatar--clickable text--deca text--bold" 
         @click="toggleMenu"
         :style="{ backgroundColor: avatar }"
       >
@@ -18,6 +18,7 @@
       
       <div 
         v-else
+        class="button button--simple"
         @click="$router.push('/login')"
       >
         <RenderSVG icon="account" />

@@ -1,4 +1,5 @@
 @use '../base/variables/dimensions';
+@use '../base/variables/display';
 
 .avatar {
   display: grid;
@@ -7,4 +8,18 @@
   width: dimensions.$largeSpacing;
   height: dimensions.$largeSpacing;
   user-select: none;
+
+  &--clickable {
+    cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: display.$desktop) {
+  .avatar {
+    &--large {
+      width: dimensions.$bigSpacing;
+      height: dimensions.$bigSpacing;
+    }
+  }
+  
 }

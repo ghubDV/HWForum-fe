@@ -1,0 +1,8 @@
+@use '../base/variables/colors';
+
+.link {
+  &--simple {
+    text-decoration: none;
+    color: colors.$fontDefault;
+  }
+}

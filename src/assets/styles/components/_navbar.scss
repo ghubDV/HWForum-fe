@@ -3,6 +3,7 @@
 @use '../base/variables/display';
 @use '../base/variables/shadows';
 @use '../components/avatar';
+@use '../components/link';
 
 .navbar {
   display: flex;
@@ -10,8 +11,7 @@
   justify-content: space-between;
   background-color: colors.$darkGrayAccent;
   box-shadow: shadows.$bottomShadow;
-  height: dimensions.$navbarHeight;
-  max-height: dimensions.$navbarHeight;
+  min-height: dimensions.$navbarHeight;
   padding: 0 dimensions.$smallSpacing;
 
   &__left, &__right {

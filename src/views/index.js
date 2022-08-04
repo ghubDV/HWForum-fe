@@ -1,5 +1,5 @@
 import Auth from './Auth.vue';
-import Home from './Home.vue';
+import Home from './ForumList.vue';
 import Profile from './Profile.vue';
 import Protected from './Protected.vue';
 

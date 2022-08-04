@@ -1,8 +1,18 @@
 @use '../base/variables/dimensions';
+@use '../base/variables/display';
 
 .icon {
-  &--small {
+  &--small, &--medium {
     width: dimensions.$iconSmall;
     height: dimensions.$iconSmall;
   }
+}
+
+@media only screen and (min-width: display.$desktop) {
+  .icon {
+    &--medium {
+      width: dimensions.$iconMedium;
+      height: dimensions.$iconMedium;
+    }
+  } 
 }

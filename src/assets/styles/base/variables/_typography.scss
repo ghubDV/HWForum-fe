@@ -1,4 +1,5 @@
 @use 'display';
+@use 'colors';
 
 //  Weights
 $thinWeight: 300;
@@ -6,11 +7,16 @@ $normalWeight: 400;
 $boldWeight: 700;
 $thickWeight: 900;
 
-// Text Sizes
+// Text Properties
 .text {
   font-size: 1rem;
   font-weight: $normalWeight;
   letter-spacing: .33px;
+
+  // Colors
+  &--primary {
+    color: colors.$forestGreen;
+  }
 
   &--thin {
     font-weight: $thinWeight;
