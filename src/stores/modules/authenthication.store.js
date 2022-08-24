@@ -95,8 +95,6 @@ const actions = {
 
       if(redirect) {
         Router.push(LOGIN.path);
-      } else {
-        Router.push(HOME.path);
       }
     } catch {
       return;

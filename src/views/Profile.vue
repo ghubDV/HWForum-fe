@@ -1,5 +1,5 @@
 <template>
-  <div class="profile content">
+  <div class="profile card">
     <Form
       @submit.prevent="handleSubmit"
       ref="form"
@@ -46,7 +46,7 @@
   import Input from '@/common/components/Input.vue';
   import ValidationList from '@/common/components/ValidationList';
   import { profile } from '@/common/schemas/form.schema';
-  import { getFormData } from '@/helpers/common.helper';
+  import { getFormData, getAvatarColor } from '@/helpers/common.helper';
 
   export default {
     components: {
@@ -83,10 +83,11 @@
       ...mapActions('profile', ['createProfile', 'getProfile', 'updateProfile']),
 
       async handleSubmit() {
-        const data = getFormData(this.$refs.form.$el);
+        let data = getFormData(this.$refs.form.$el);
         let response;
 
         if(!this.profile.exists) {
+          data.avatar = getAvatarColor();
           response = await this.createProfile(data);
           if(response.type === 'success') {
             this.profile.exists = true,

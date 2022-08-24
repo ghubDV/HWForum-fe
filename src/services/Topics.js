@@ -11,5 +11,9 @@ export default {
 
   getTopicsCategories() {
     return Api().get('getTopicsCategories');
+  },
+
+  getThreadsTopic(topic) {
+    return Api().get(`getThreadsTopic?topicID=${topic}`);
   }
 }

@@ -2,7 +2,8 @@ import Topics from '@/services/Topics';
 import { formatResponse } from '@/helpers/common.helper';
 
 const state = {
-  forumList: []
+  forumList: [],
+  threadList: {}
 }
 
 const getters = {
@@ -12,8 +13,12 @@ const getters = {
 }
 
 const mutations = {
-  UPDATE_LIST (state, payload) {
-    state.forumList = [...payload];
+  UPDATE_LIST (state, data) {
+    state.forumList = [...data];
+  },
+
+  UPDATE_THREADS (state, data) {
+    state.threadList = Object.assign({}, data);
   }
 }
 
@@ -23,6 +28,15 @@ const actions = {
       const { data } = await Topics.getTopicsCategories();
       commit('UPDATE_LIST', data);
     } catch (error) {
+      return formatResponse(error);
+    }
+  },
+
+  async fetchThreadList ({ commit }, topicID) {
+    try {
+      const { data } = await Topics.getThreadsTopic(topicID);
+      commit('UPDATE_THREADS', data);
+    } catch(error) {
       return formatResponse(error);
     }
   }

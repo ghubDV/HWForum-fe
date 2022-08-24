@@ -15,6 +15,7 @@
       <CardItem  
         v-for="(topic, i) in category.topics"
         class="button button--simple button--no-padding"
+        @click="$router.push('/topic/' + topic.id)"
         :key="i"
       >
         <template #icon>
@@ -44,10 +45,10 @@
 
   export default {
     components: {
-    Card,
-    CardItem,
-    RenderSVG
-},
+      Card,
+      CardItem,
+      RenderSVG
+    },
 
     computed: {
       ...mapState('topics', ['forumList']),

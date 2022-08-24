@@ -38,6 +38,12 @@ const PROFILE = {
   auth: true
 }
 
+const THREADLIST = {
+  path: '/topic/:name?:id(\\d+)',
+  name: 'ThreadList',
+  component: 'ThreadList'
+}
+
 export {
   HOME,
   REGISTER,
@@ -45,4 +51,5 @@ export {
   ACTIVATE,
   RESET,
   PROFILE,
+  THREADLIST
 }
