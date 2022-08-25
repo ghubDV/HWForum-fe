@@ -23,7 +23,7 @@
   &__item {
     padding: dimensions.$normalSpacing 0;
     display: flex;
-    gap: dimensions.$smallSpacing;
+    gap: dimensions.$normalSpacing;
     border-bottom: borders.$darkishGray;
 
     &:last-child {
@@ -40,6 +40,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: dimensions.$smallSpacing;
   }
 
   &:hover {

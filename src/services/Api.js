@@ -11,11 +11,13 @@ const requireLoader = [
   'logout', 
   'sendCode',
   'createProfile',
-  'updateProfile'
+  'updateProfile',
+  'getThreadsTopic'
 ];
 
 instance.interceptors.request.use(function (config) {
-  if(requireLoader.includes(config.url)) {
+  console.log(config)
+  if(requireLoader.includes(config.url.split('?')[0])) {
     store.dispatch('common/startLoading');
   }
   return config;
@@ -23,7 +25,7 @@ instance.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 instance.interceptors.response.use(function (response) {
-  if(requireLoader.includes(response.config.url)) {
+  if(requireLoader.includes(response.config.url.split('?')[0])) {
     store.dispatch('common/finishLoading')
   }
   return response;
@@ -36,7 +38,7 @@ instance.interceptors.response.use(function (response) {
       redirect: true
     });
   }
-  if(requireLoader.includes(error.response.config.url)) {
+  if(requireLoader.includes(error.response.config.url.split('?')[0])) {
     store.dispatch('common/finishLoading')
   }
   return Promise.reject(error);

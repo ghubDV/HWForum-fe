@@ -37,8 +37,14 @@ const getAvatarColor = () => {
   return color;
 }
 
+const timeElapsed = (time) => {
+  const moment = require('moment');
+  return moment(new Date(time)).fromNow();
+}
+
 export {
   getFormData,
   formatResponse,
-  getAvatarColor
+  getAvatarColor,
+  timeElapsed
 }
