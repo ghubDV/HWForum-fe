@@ -31,17 +31,22 @@
               class="menu__list-item"
               :key="i"
             >
-              <RenderSVG 
-                v-if="item.icon"
-                :icon="item.icon" 
-                class="icon--small"
-              />
               <Button
                 class="menu__item button button--simple-green button--no-padding text text--bold"
-                :text="item.text"
                 type="button"
                 @click="handleMenuClick(item)" 
-              />
+              >
+                <template #icon>
+                  <RenderSVG 
+                    v-if="item.icon"
+                    :icon="item.icon" 
+                    class="icon--small"
+                  />
+                </template>
+                <template #text>
+                  {{ item.text }}
+                </template>
+              </Button>
             </div>
           </div>
         </template>

@@ -1,0 +1,7 @@
+@use '../base/variables/dimensions';
+
+.thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: dimensions.$normalSpacing;
+}

@@ -1,12 +1,12 @@
 <template>
-  <button>{{ text }}</button>
+  <button>
+    <slot name="icon"></slot>
+    <slot name="text"></slot>
+  </button>
 </template>
 
 <script>
 export default {
-  props: {
-    text: String
-  }
 }
 </script>
 

@@ -29,10 +29,13 @@
       <template #submit>
         <div class="profile__submit">
           <Button 
-            class="button button--normal button--primary text text--deci text--bold" 
+            class="button button--normal button--primary button--text-center text text--deci text--bold" 
             type="submit"
-            :text="profile.exists ? profileSchema.submit.update.name : profileSchema.submit.create.name"
-          />
+          >
+            <template #text>
+              {{ profile.exists ? profileSchema.submit.update.name : profileSchema.submit.create.name }}
+            </template>
+          </Button>
         </div>
       </template>
     </Form>
@@ -50,11 +53,11 @@
 
   export default {
     components: {
-      Form,
-      Button,
-      Input,
-      ValidationList
-    },
+    Form,
+    Button,
+    Input,
+    ValidationList
+},
 
     data() {
       return {

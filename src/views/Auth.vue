@@ -26,20 +26,26 @@
         </template>
         <template #submit>
           <Button 
-            class="button button--normal button--primary text text--deci text--bold" 
+            class="button button--normal button--primary button--text-center text text--deci text--bold" 
             type="submit"
-            :text="formSchema.submit"
-          />
+          >
+            <template #text>
+              {{ formSchema.submit }}
+            </template>
+          </Button>
         </template>
         <template #additional>
           <Button 
             v-for="(button, i) in formSchema.additional"
             type="button"
-            class="button button--link text text--deci" 
+            class="button button--link button--text-center text text--deci" 
             @click="$router.push(button.redirect)"
-            :text="button.text"
             :key="i"
-          />
+          >
+            <template #text>
+              {{ button.text }}
+            </template>
+          </Button>
         </template>
       </Form>
     </div>

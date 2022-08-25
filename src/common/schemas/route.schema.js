@@ -38,10 +38,17 @@ const PROFILE = {
   auth: true
 }
 
-const THREADLIST = {
+const THREAD_LIST = {
   path: '/topic/:name?:id(\\d+)',
   name: 'ThreadList',
   component: 'ThreadList'
+}
+
+const CREATE_THREAD = {
+  path: '/thread/create',
+  name: 'CreateThread',
+  component: 'CreateThread',
+  auth: true
 }
 
 export {
@@ -51,5 +58,6 @@ export {
   ACTIVATE,
   RESET,
   PROFILE,
-  THREADLIST
+  THREAD_LIST,
+  CREATE_THREAD
 }

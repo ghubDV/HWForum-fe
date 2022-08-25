@@ -1,0 +1,91 @@
+@use '../base/variables/borders';
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/shadows';
+.ql-snow {
+  &.ql-toolbar {
+    border-radius: dimensions.$normalRadius dimensions.$normalRadius 0 0;
+
+    button {
+      svg, .ql-stroke {
+        stroke: colors.$fontDefault;
+      }
+  
+      &:hover, &.ql-active {
+        background-color: transparent;
+  
+        svg, .ql-stroke {
+          stroke: colors.$forestGreen;
+        }
+      }
+    }
+
+    .ql-picker {
+      color: colors.$fontDefault;
+
+      &.ql-expanded {
+        background-color: rgba(colors.$forestGreen, .2);
+      }
+
+      &-label {
+        border: 0;
+
+        .ql-stroke {
+          stroke: colors.$fontDefault;
+        }
+
+        &.ql-active, &:hover {
+          background-color: transparent;
+          color: colors.$forestGreen;
+
+          .ql-stroke {
+            stroke: colors.$forestGreen;
+          }
+        }
+      }
+
+      &-options {
+        background-color: colors.$darkGrayAccent;
+        border: 0;
+        box-shadow: shadows.$strongerShadow;
+
+        .ql-selected {
+          background-color: transparent;
+          color: colors.$forestGreen;
+
+          .ql-stroke {
+            stroke: colors.$forestGreen;
+          }
+        }
+      }
+
+      &-item {
+        &:hover {
+          background-color: transparent;
+          color: colors.$forestGreen;
+        }
+      }
+    }
+  }
+  
+  &.ql-container {
+    border-radius: 0 0 dimensions.$normalRadius dimensions.$normalRadius;
+
+    .ql-tooltip {
+      background-color: colors.$darkGrayAccent;
+      border: borders.$darkishGray;
+      box-shadow: none;
+      color: colors.$fontDefault;
+      left: 0;
+
+      input {
+        background-color: transparent;
+        color: colors.$fontDefault;
+      }
+
+      .ql-action {
+        color: colors.$forestGreen;
+      }
+    }
+  }
+}
