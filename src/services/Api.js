@@ -16,7 +16,6 @@ const requireLoader = [
 ];
 
 instance.interceptors.request.use(function (config) {
-  console.log(config)
   if(requireLoader.includes(config.url.split('?')[0])) {
     store.dispatch('common/startLoading');
   }

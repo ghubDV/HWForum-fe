@@ -166,10 +166,31 @@ const profile = {
   ]
 }
 
+const createThread = {
+  title: "Create a new thread",
+  submit: "Create",
+  inputs: [
+    {
+      type: "text",
+      name: "name",
+      placeholder: "Thread title",
+      required: true
+    },
+  ],
+  selects: [
+    {
+      grouped: true,
+      subGroup: "topics",
+      name: "topic"
+    }
+  ]
+}
+
 export {
   register,
   reset,
   login,
   activate,
-  profile
+  profile,
+  createThread
 }

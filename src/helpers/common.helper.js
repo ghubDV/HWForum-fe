@@ -42,9 +42,14 @@ const timeElapsed = (time) => {
   return moment(new Date(time)).fromNow();
 }
 
+const getTextEditorHTML = (editor) => {
+  return editor.getHTML();
+}
+
 export {
   getFormData,
   formatResponse,
   getAvatarColor,
-  timeElapsed
+  timeElapsed,
+  getTextEditorHTML
 }

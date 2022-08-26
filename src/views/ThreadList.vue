@@ -2,7 +2,7 @@
   <section class="thread-list">
     <Button 
       class="button button--normal button--primary button--right button--text-center text--bold"
-      @click="$router.push('/thread/create')"
+      @click="$router.push('create-thread')"
     >
       <template #text>
         Create Thread
@@ -24,6 +24,7 @@
         <CardItem  
           v-for="(thread, i) in threadList.threads"
           class="button button--simple button--no-padding"
+          @click="$router.push('/thread.' + thread.id)"
           :key="i"
         >
           <template #icon>

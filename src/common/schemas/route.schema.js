@@ -39,13 +39,13 @@ const PROFILE = {
 }
 
 const THREAD_LIST = {
-  path: '/topic/:name?:id(\\d+)',
+  path: '/topic/:name?:id(\\d+)/',
   name: 'ThreadList',
   component: 'ThreadList'
 }
 
 const CREATE_THREAD = {
-  path: '/thread/create',
+  path: '/topic/:name?:id(\\d+)?/create-thread',
   name: 'CreateThread',
   component: 'CreateThread',
   auth: true
