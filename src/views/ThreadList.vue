@@ -1,5 +1,5 @@
 <template>
-  <section class="thread-list">
+  <section class="thread-list" v-if="!pageError">
     <Button 
       class="button button--normal button--primary button--right button--text-center text--bold"
       @click="$router.push('create-thread')"
@@ -15,9 +15,9 @@
     >
 
       <template #header>
-        <div class="card__header text--hecto text--bold">
+        <h2 class="card__header text--hecto text--bold">
           {{ threadList.topic }}
-        </div>
+        </h2>
       </template>
 
       <template #content>
@@ -51,6 +51,20 @@
       </template>
     </Card>
   </section>
+
+  <!-- Case when topic is not found -->
+  <section class="thread-list" v-else>
+    <Card 
+      v-show="progress === 100"
+      class="card--small-padding"
+    >
+      <template #header>
+        <h2 class="text--deca text--bold">
+          Ouch :(! This topic could not be found.
+        </h2>
+      </template>
+    </Card>
+  </section>
 </template>
 
 <script>
@@ -62,10 +76,16 @@
 
   export default {
     components: {
-    Button,
-    Card,
-    CardItem
-},
+      Button,
+      Card,
+      CardItem
+    },
+
+    data() {
+      return {
+        pageError: false
+      }
+    },
 
     computed: {
       ...mapState('topics', ['threadList']),
@@ -81,13 +101,17 @@
     },
 
     async mounted() {
-      await this.fetchThreadList(this.$route.params.id);
-      this.$router.replace({ 
-        params: {
-          ...this.$route.params, 
-          name: this.threadList.topic.toLowerCase().replace(/\s/g, '-') + '.'
-        }
-      })
+      const response = await this.fetchThreadList(this.$route.params.id);
+      if(response && response.type === 'error') {
+        this.pageError = true;
+      } else {
+        this.$router.replace({ 
+          params: {
+            ...this.$route.params, 
+            name: this.threadList.topic.toLowerCase().replace(/\s/g, '-') + '.'
+          }
+        })
+      }
     }
   }
 </script>

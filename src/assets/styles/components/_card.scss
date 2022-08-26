@@ -10,6 +10,11 @@
   box-shadow: shadows.$smoothShadow;
   border-radius: dimensions.$largeRadius;
   transition: box-shadow .3s ease;
+  overflow: hidden;
+
+  &--no-padding {
+    padding: 0;
+  }
 
   &--small-padding {
     padding: dimensions.$normalSpacing;

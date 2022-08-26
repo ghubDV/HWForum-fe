@@ -9,7 +9,8 @@
   flex-direction: column;
 
   &--standard {
-    height: calc(dimensions.$authenthicationWidth / 2);
+    height: dimensions.$qlEditor;
+    max-height: dimensions.$qlEditor;
   }
 
   .ql-snow {
@@ -80,6 +81,9 @@
     
     &.ql-container {
       border-radius: 0 0 dimensions.$normalRadius dimensions.$normalRadius;
+      height: calc(dimensions.$authenthicationWidth / 2);
+      max-height: calc(dimensions.$authenthicationWidth / 2);
+      padding: dimensions.$smallSpacing;
   
       .ql-tooltip {
         background-color: colors.$darkGrayAccent;
@@ -99,6 +103,12 @@
       }
 
       .ql-editor {
+        padding: 0;
+
+        a {
+          color: colors.$forestGreen;
+        }
+
         &::before {
           color: rgba(colors.$fontDefault, .4);
           font-style: normal;

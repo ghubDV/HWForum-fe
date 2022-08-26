@@ -2,12 +2,16 @@ import Thread from '@/services/Thread';
 import { formatResponse } from '@/helpers/common.helper';
 
 const state = {
+  thread: {}
 }
 
 const getters = {
 }
 
 const mutations = {
+  UPDATE_THREAD(state, data) {
+    state.thread = {...data};
+  }
 }
 
 const actions = {
@@ -19,6 +23,15 @@ const actions = {
       return formatResponse(error);
     }
   },
+  
+  async getThreadById ({ commit }, threadID) {
+    try {
+      const response = await Thread.getThreadById(threadID);
+      commit('UPDATE_THREAD', response.data);
+    } catch (error) {
+      return formatResponse(error);
+    }
+  }
 }
 
 const threadStore = {

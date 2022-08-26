@@ -12,10 +12,15 @@ $thickWeight: 900;
   font-size: 1rem;
   font-weight: $normalWeight;
   letter-spacing: .33px;
+  line-height: 1.5rem;
 
   // Colors
   &--primary {
     color: colors.$forestGreen;
+  }
+
+  &--subdued {
+    color: colors.$deepSilver;
   }
 
   &--thin {

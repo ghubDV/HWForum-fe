@@ -51,6 +51,12 @@ const CREATE_THREAD = {
   auth: true
 }
 
+const THREAD_DETAILS = {
+  path: '/thread.:id(\\d+)?',
+  name: 'ThreadDetails',
+  component: 'ThreadDetails'
+}
+
 export {
   HOME,
   REGISTER,
@@ -59,5 +65,6 @@ export {
   RESET,
   PROFILE,
   THREAD_LIST,
-  CREATE_THREAD
+  CREATE_THREAD,
+  THREAD_DETAILS
 }

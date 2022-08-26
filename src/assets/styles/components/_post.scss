@@ -1,0 +1,59 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+
+.post {
+  display: flex;
+
+  &__author, &__content {
+    display: flex;
+    flex-direction: column;
+    padding: dimensions.$normalSpacing;
+  }
+
+  &__author {
+    align-items: center;
+    background-color: colors.$darkGrayAccentLight;
+    gap: dimensions.$smallSpacing;
+  }
+
+  &__content {
+    flex: 1;
+    gap: dimensions.$mediumSpacing;
+
+    &-main {
+      flex: 1;
+
+      a{
+        color: colors.$forestGreen;
+      }
+
+      h1 {
+        font-size: 1.625rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      h3 {
+        font-size: 0.875rem;
+      }
+
+      h4 {
+        font-size: 0.75rem;
+      }
+
+      h5 {
+        font-size: 0.625rem
+      }
+
+      h6 {
+        font-size: 0.5rem;
+      }
+    }
+
+    &-extra {
+      text-align: right;
+    }
+  }
+}
