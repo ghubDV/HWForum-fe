@@ -11,6 +11,7 @@ const requireLoader = [
   'logout', 
   'sendCode',
   'createProfile',
+  'createThread',
   'updateProfile',
   'getThreadsTopic'
 ];

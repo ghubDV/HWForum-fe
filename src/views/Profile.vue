@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
   import Button from '@/common/components/Button.vue';
   import Form from '@/common/components/Form.vue';
   import Input from '@/common/components/Input.vue';
@@ -53,11 +53,17 @@
 
   export default {
     components: {
-    Form,
-    Button,
-    Input,
-    ValidationList
-},
+        Form,
+        Button,
+        Input,
+        ValidationList
+    },
+
+    computed: {
+      ...mapGetters({
+        username: 'auth/getUsername'
+      })
+    },
 
     data() {
       return {
@@ -74,7 +80,7 @@
     },
 
     async mounted() {
-      const profile = await this.getProfile();
+      const profile = await this.getProfile(this.username);
 
       if(profile !== null) {
         this.profile.exists = true;

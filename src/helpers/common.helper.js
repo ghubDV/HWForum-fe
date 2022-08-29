@@ -39,11 +39,21 @@ const getAvatarColor = () => {
 
 const timeElapsed = (time) => {
   const moment = require('moment');
+  const targetDate = moment(new Date(time));
+  const daysFromTarget = moment(new Date()).diff(targetDate, 'days');
+
+  if(daysFromTarget > 0) {
+    return targetDate.format('MMM Do, H:mm A')
+  }
+
   return moment(new Date(time)).fromNow();
 }
 
-const getTextEditorHTML = (editor) => {
-  return editor.getHTML();
+const getTextEditorContent = (editor) => {
+  return {
+    text: editor.getText(),
+    html: editor.getHTML()
+  };
 }
 
 export {
@@ -51,5 +61,5 @@ export {
   formatResponse,
   getAvatarColor,
   timeElapsed,
-  getTextEditorHTML
+  getTextEditorContent
 }

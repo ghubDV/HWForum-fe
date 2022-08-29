@@ -5,8 +5,8 @@ export default {
     return Api().post('createProfile', credentials, { withCredentials: true });
   },
 
-  getProfile() {
-    return Api().get('getProfile', { withCredentials: true });
+  getProfile(username) {
+    return Api().get(`getProfile?username=${username}`);
   },
 
   updateProfile(credentials) {

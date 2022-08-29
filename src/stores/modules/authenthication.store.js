@@ -85,7 +85,7 @@ const actions = {
     }
   },
 
-  async logout ({ commit, state }, redirect) {
+  async logout ({ commit, state }, redirect = false) {
     try {
       if(state.user.isLoggedIn) {
         await Auth.logout();

@@ -21,9 +21,9 @@ const actions = {
     }
   },
 
-  async getProfile() {
+  async getProfile(_ctx, username) {
     try {
-      const response = await Profile.getProfile()
+      const response = await Profile.getProfile(username)
       return response.data.profile;
     } catch (error) {
       return formatResponse(error);

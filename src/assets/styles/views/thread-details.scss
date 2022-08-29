@@ -4,4 +4,10 @@
   display: flex;
   flex-direction: column;
   gap: dimensions.$largeSpacing;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: dimensions.$normalSpacing;
+  }
 }

@@ -59,7 +59,7 @@
 
 <script>
   import { mapActions, mapState } from 'vuex';
-  import { getTextEditorHTML, getFormData } from '@/helpers/common.helper';
+  import { getTextEditorContent, getFormData } from '@/helpers/common.helper';
   import { createThread } from '@/common/schemas/form.schema';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
@@ -83,7 +83,7 @@
     data () {
       return {
         threadSchema: createThread,
-        editorContent:'',
+        editor: null,
         validation: {
           messages: [],
           type: ''
@@ -100,19 +100,22 @@
       ...mapActions('thread', ['createThread']),
 
       getEditor(editor) {
-        this.editorContent = getTextEditorHTML(editor);
+        this.editor = editor;
       },
 
       async handleSubmit() {
         let data = getFormData(this.$refs.form.$el);
+
         data = {
           ...data,
-          content: this.editorContent
+          content: getTextEditorContent(this.editor)
         }
 
         const response = await this.createThread(data);
 
-        this.validation = {...response};
+        if(response) {
+          this.validation = {...response};
+        }
       }
     },
 

@@ -43,9 +43,18 @@
           </template>
 
           <template #info>
-            <p class="text text--deci">
+            <p class="text text--centi text--subdued">
               By {{ thread.profile.name }} - {{ timeElapsed(thread.createdAt) }}
             </p>
+          </template>
+
+          <template #extra>
+            <div>
+              <RenderSVG class="icon--tiny" icon="comment" />
+              <p class="text text--primary text--centi text--center">
+                {{ thread.replies }}
+              </p>
+            </div>
           </template>
         </CardItem>
       </template>
@@ -73,12 +82,14 @@
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
   import CardItem from '@/common/components/CardItem.vue';
+  import RenderSVG from '@/common/components/Svg.vue';
 
   export default {
     components: {
       Button,
       Card,
-      CardItem
+      CardItem,
+      RenderSVG
     },
 
     data() {

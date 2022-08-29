@@ -2,6 +2,11 @@
 @use '../base/variables/display';
 
 .icon {
+  &--tiny {
+    width: dimensions.$iconTiny;
+    height: dimensions.$iconTiny;
+  }
+
   &--small, &--medium {
     width: dimensions.$iconSmall;
     height: dimensions.$iconSmall;

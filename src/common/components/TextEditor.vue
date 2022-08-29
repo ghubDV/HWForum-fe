@@ -4,7 +4,7 @@
       theme="snow" 
       toolbar="essential"
       ref="editor"
-      @textChange="$emit('getEditor', $refs.editor)"
+      @ready="$emit('getEditor', $refs.editor)"
       :placeholder="placeholder"
     />
   </div>

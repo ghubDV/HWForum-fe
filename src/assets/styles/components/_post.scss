@@ -1,8 +1,10 @@
 @use '../base/variables/colors';
 @use '../base/variables/dimensions';
+@use '../base/variables/display';
 
 .post {
   display: flex;
+  flex-direction: column;
 
   &__author, &__content {
     display: flex;
@@ -53,7 +55,19 @@
     }
 
     &-extra {
-      text-align: right;
+      display: flex;
+      justify-content: space-between;
     }
+
+    &-controls { 
+      display: flex;
+      gap: dimensions.$smallSpacing;
+    }
+  }
+}
+
+@media only screen and (min-width: display.$phone) {
+  .post {
+    flex-direction: row;
   }
 }
