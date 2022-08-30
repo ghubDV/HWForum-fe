@@ -8,4 +8,8 @@ export default {
   getThreadById(threadID) {
     return Api().get(`getThreadById?threadID=${threadID}`);
   },
+
+  updatePost(credentials) {
+    return Api().patch('updatePost', credentials, { withCredentials: true });
+  }
 }

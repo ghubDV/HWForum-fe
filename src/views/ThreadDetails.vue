@@ -26,7 +26,7 @@
 
             <!-- Post editor closed -->
 
-            <template v-if="!editors[thread.id] || !editors[thread.id].open" #content>
+            <template v-if="!editors[thread.id]" #content>
               <div class="post__content-main text" v-html="thread.content"></div>
               <div class="post__content-extra">
                 <div class="post__content-controls">
@@ -44,7 +44,7 @@
                     </template>
                   </Button>
                 </div>
-                <p class="text text--centi text--subdued">{{ timeElapsed(thread.createdAt) }}</p>
+                <p class="text text--centi text--subdued">{{ timeElapsed(thread.updatedAt) }}</p>
               </div>
             </template>
 
@@ -59,7 +59,7 @@
                 <div class="post__content-controls">
                   <Button
                     class="button button--primary button--right button--text-center"
-                    @click="saveEdit(thread.id)"
+                    @click="saveEdit(thread)"
                   >
                     <template #text>
                       Save
@@ -125,7 +125,7 @@
 </template>
 
 <script>
-  import { mapActions, mapGetters, mapState } from 'vuex';
+  import { mapActions, mapState } from 'vuex';
   import { getTextEditorContent, timeElapsed } from '../helpers/common.helper';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
@@ -157,17 +157,22 @@
 
     computed: {
       ...mapState('thread', ['thread']),
-      ...mapGetters({
-        isLoggedIn: 'auth/getUserAuth',
-        username: 'auth/getUsername'
-      })
+      ...mapState('auth', ['user'])
     },
 
     methods: {
-      ...mapActions('thread', ['getThreadById']),
+      ...mapActions('thread', ['getThreadById', 'updatePost']),
       ...mapActions('profile', ['getProfile']),
+      ...mapActions('common', ['sendNotification']),
 
       timeElapsed: timeElapsed,
+
+      async getCurrentUser(user) {
+        if(user.isLoggedIn) {
+          const profile = await this.getProfile(user.username);
+          this.myProfile = profile.profileName;
+        }
+      },
 
       getEditor(editor, postID = undefined, content = null) {
         if(postID) {
@@ -181,7 +186,6 @@
             editor: editor
           };
         }
-        console.log(this.editors)
       },
 
       openEditor(postID) {
@@ -190,26 +194,49 @@
         } else {
           this.editors = {
             ...this.editors,
-            [postID]: {
-              open: true
-            }
+            [postID]: {}
           }
         }
       },
 
-      saveEdit(postID) {
-        const editor = this.editors[postID].editor;
+      async saveEdit(post) {
+        const editor = this.editors[post.id] ? this.editors[post.id].editor : this.editors.create.editor;
 
-        console.log(getTextEditorContent(editor));
+        const content = getTextEditorContent(editor);
 
-        if(postID !== 'create') {
-          delete this.editors[postID];
-          console.log(this.editors);
+        const data = {
+          postID: post.id || null,
+          content: content,
+          isThread: post.isThread || false
+        }
+
+        const result = await this.updatePost(data);
+
+        if(result.type === 'success') {
+          post.content = content.html;
+        }
+
+        this.sendNotification({
+          type: 0,
+          message: {
+            type: result.type,
+            list: result.messages
+          }
+        })
+
+        if(post.id !== 'create') {
+          delete this.editors[post.id];
         }
       },
 
       closeEditor(postID) {
-        this.editors[postID].open = false;
+        delete this.editors[postID];
+      }
+    },
+
+    watch: {
+      async 'user' (updatedUser) {
+        await this.getCurrentUser(updatedUser);
       }
     },
 
@@ -220,10 +247,7 @@
         this.pageError.message = thread.messages[0];
       }
 
-      if(this.isLoggedIn) {
-        const profile = await this.getProfile(this.username);
-        this.myProfile = profile.profileName;
-      }
+      await this.getCurrentUser(this.user);
     }
   }
 </script>

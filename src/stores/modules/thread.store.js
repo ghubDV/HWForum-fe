@@ -31,7 +31,20 @@ const actions = {
   async getThreadById ({ commit }, threadID) {
     try {
       const response = await Thread.getThreadById(threadID);
+      response.data = {
+        ...response.data,
+        isThread: true
+      }
       commit('UPDATE_THREAD', response.data);
+    } catch (error) {
+      return formatResponse(error);
+    }
+  },
+
+  async updatePost(_ctx, post) {
+    try {
+      const response = await Thread.updatePost(post);
+      return formatResponse(response);
     } catch (error) {
       return formatResponse(error);
     }

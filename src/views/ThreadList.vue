@@ -44,7 +44,7 @@
 
           <template #info>
             <p class="text text--centi text--subdued">
-              By {{ thread.profile.name }} - {{ timeElapsed(thread.createdAt) }}
+              By {{ thread.profile.name }} - {{ timeElapsed(thread.updatedAt) }}
             </p>
           </template>
 

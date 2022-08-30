@@ -1,7 +1,15 @@
+const NOTIFICATION_DURATION = 10000;
+
 const state = {
   loader: {
     isLoading: false,
     progress: 0,
+  },
+
+  notification: {
+    visible: false,
+    type: '',
+    message: {}
   }
 }
 
@@ -22,6 +30,21 @@ const mutations = {
 
   SET_LOADING (state, loading) {
     state.loader.isLoading = loading;
+  },
+
+  SHOW_NOTIFICATION (state, notification) {
+    state.notification = {
+      visible: true,
+      ...notification
+    }
+  },
+
+  HIDE_NOTIFICATION (state) {
+    state.notification = {
+      visible: false,
+      type: '',
+      message: {}
+    }
   }
 }
 
@@ -37,6 +60,18 @@ const actions = {
       commit('SET_LOADING', false);
     }, 1000);
   },
+
+  sendNotification({ commit }, { type, message }) {
+    commit('SHOW_NOTIFICATION', { type, message });
+
+    setTimeout(function() {
+      commit('HIDE_NOTIFICATION');
+    }, NOTIFICATION_DURATION);
+  },
+
+  hideNotification({ commit }) {
+    commit('HIDE_NOTIFICATION');
+  }
 }
 
 const commonStore = {

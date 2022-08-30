@@ -37,10 +37,11 @@ const mutations = {
   },
 
   LOG_IN (state, payload) {
-    state.user.isLoggedIn = true;
-    state.user.username = payload.username;
-    if(!state.user.avatar) {
-      state.user.avatar = localStorage.getItem('avatar') || getAvatarColor();
+    state.user = {
+      ...state.user,
+      isLoggedIn: true,
+      username: payload.username,
+      avatar: localStorage.getItem('avatar') || getAvatarColor()
     }
   },
 
