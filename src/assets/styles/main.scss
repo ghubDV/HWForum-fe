@@ -30,6 +30,10 @@ em {
   font-style: italic;
 }
 
+ol, ul {
+  list-style-position: inside;
+}
+
 .main-content {
   display: flex;
   flex-direction: column;

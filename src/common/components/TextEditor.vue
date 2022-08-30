@@ -2,7 +2,7 @@
   <div class="editor editor--standard">
     <QuillEditor
       theme="snow" 
-      toolbar="essential"
+      :options="options"
       ref="editor"
       @ready="$emit('getEditor', $refs.editor)"
       :placeholder="placeholder"
@@ -25,6 +25,19 @@ export default {
 
   data () {
     return {
+      options: {
+        modules: {
+          toolbar: [
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'align': [] }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['blockquote', 'link'],
+            [{ 'color': [] }],
+            ['clean']
+          ]
+        },
+      },
       editorContent: ''
     }
   },

@@ -1,11 +1,7 @@
 <template>
   <div class="post">
-    <div class="post__author">
-      <slot name="author"></slot>
-    </div>
-    <div class="post__content">
-      <slot name="content"></slot>
-    </div>
+    <slot name="author"></slot>
+    <slot name="content"></slot>
   </div>
 </template>
 

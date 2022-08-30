@@ -3,7 +3,8 @@ import Router from '@/routes';
 import { formatResponse } from '@/helpers/common.helper';
 
 const state = {
-  thread: {}
+  thread: {},
+  comments: []
 }
 
 const getters = {
@@ -12,10 +13,24 @@ const getters = {
 const mutations = {
   UPDATE_THREAD(state, data) {
     state.thread = {...data};
+  },
+
+  UPDATE_COMMENTS(state, data) {
+    state.comments = [...data];
   }
 }
 
 const actions = {
+  async createComment (_ctx, comment) {
+    try {
+      const response = await Thread.createComment(comment)
+
+      return formatResponse(response);
+    } catch (error) {
+      return formatResponse(error);
+    }
+  },
+
   async createThread (_ctx, thread) {
     try {
       const response = await Thread.createThread(thread)
@@ -36,6 +51,15 @@ const actions = {
         isThread: true
       }
       commit('UPDATE_THREAD', response.data);
+    } catch (error) {
+      return formatResponse(error);
+    }
+  },
+
+  async getCommentsInThread ({ commit }, threadID) {
+    try {
+      const response = await Thread.getCommentsInThread(threadID);
+      commit('UPDATE_COMMENTS', response.data);
     } catch (error) {
       return formatResponse(error);
     }

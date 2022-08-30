@@ -37,6 +37,24 @@
         &.ql-expanded {
           background-color: rgba(colors.$forestGreen, .2);
         }
+
+        &.ql-size {
+          .ql-picker-item[data-value="small"]::before {
+            font-size: .75rem;
+          }
+
+          .ql-picker-item::before {
+            font-size: 1rem;
+          }
+
+          .ql-picker-item[data-value="large"]::before {
+            font-size: 1.5rem;
+          }
+
+          .ql-picker-item[data-value="huge"]::before {
+            font-size: 2rem;
+          }
+        }
   
         &-label {
           border: 0;
@@ -105,8 +123,32 @@
       .ql-editor {
         padding: 0;
 
+        .ql-size {
+          &-small {
+            font-size: .75rem;
+          }
+
+          &-large {
+            font-size: 1.5rem;
+          }
+
+          &-huge {
+            font-size: 2rem;
+          }
+        }
+
+        p {
+          font-size: 1rem;
+        }
+
         a {
           color: colors.$forestGreen;
+        }
+
+        blockquote {
+          background-color: colors.$darkGrayAccentLight;
+          border-left: dimensions.$normalRadius solid colors.$forestGreen;
+          padding: dimensions.$smallSpacing 1rem;
         }
 
         &::before {

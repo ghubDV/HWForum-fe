@@ -2,7 +2,7 @@
   <section class="thread-list" v-if="!pageError">
     <Button 
       class="button button--normal button--primary button--right button--text-center text--bold"
-      @click="$router.push('create-thread')"
+      @click="$router.push($route.path + '/create-thread')"
     >
       <template #text>
         Create Thread
@@ -115,13 +115,6 @@
       const response = await this.fetchThreadList(this.$route.params.id);
       if(response && response.type === 'error') {
         this.pageError = true;
-      } else {
-        this.$router.replace({ 
-          params: {
-            ...this.$route.params, 
-            name: this.threadList.topic.toLowerCase().replace(/\s/g, '-') + '.'
-          }
-        })
       }
     }
   }

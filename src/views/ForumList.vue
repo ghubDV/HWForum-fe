@@ -15,7 +15,7 @@
       <CardItem  
         v-for="(topic, i) in category.topics"
         class="button button--simple button--no-padding"
-        @click="$router.push('/topic/' + topic.id)"
+        @click="$router.push('/topic/' + topic.name.toLowerCase().replace(/\s/g, '-') + '.' + topic.id)"
         :key="i"
       >
         <template #icon>

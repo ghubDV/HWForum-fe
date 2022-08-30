@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '../stores';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:4000/'
+  baseURL: 'http://192.168.0.220:4000/'
 })
 
 const requireLoader = [
@@ -13,7 +13,7 @@ const requireLoader = [
   'createProfile',
   'createThread',
   'updateProfile',
-  'getThreadsTopic'
+  'getThreadsTopic',
 ];
 
 instance.interceptors.request.use(function (config) {
