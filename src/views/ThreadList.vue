@@ -24,7 +24,7 @@
         <CardItem  
           v-for="(thread, i) in threadList.threads"
           class="button button--simple button--no-padding"
-          @click="$router.push('/thread.' + thread.id)"
+          @click="$router.push(createFriendlyURL('/thread/', thread.title, thread.id))"
           :key="i"
         >
           <template #icon>
@@ -78,7 +78,7 @@
 
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex';
-  import { timeElapsed } from '../helpers/common.helper';
+  import { timeElapsed, createFriendlyURL } from '../helpers/common.helper';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
   import CardItem from '@/common/components/CardItem.vue';
@@ -108,7 +108,8 @@
     methods: {
       ...mapActions('topics', ['fetchThreadList']),
 
-      timeElapsed: timeElapsed
+      timeElapsed: timeElapsed,
+      createFriendlyURL: createFriendlyURL
     },
 
     async mounted() {
@@ -116,6 +117,8 @@
       if(response && response.type === 'error') {
         this.pageError = true;
       }
+
+      history.replaceState({}, null, createFriendlyURL('/topic/', this.threadList.topic, this.threadList.id));
     }
   }
 </script>

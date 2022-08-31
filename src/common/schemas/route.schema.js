@@ -52,7 +52,7 @@ const CREATE_THREAD = {
 }
 
 const THREAD_DETAILS = {
-  path: '/thread.:id(\\d+)?',
+  path: '/thread/:name?.:id(\\d+)',
   name: 'ThreadDetails',
   component: 'ThreadDetails'
 }

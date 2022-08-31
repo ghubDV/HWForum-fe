@@ -1,0 +1,19 @@
+@use '../base/variables/borders';
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+
+.pages {
+  display: flex;
+  
+  &__item {
+    display: grid;
+    place-items: center;
+    border: borders.$darkishGray;
+    width: dimensions.$normalSpacing;
+    height: dimensions.$normalSpacing;
+
+    &--selected {
+      color: colors.$forestGreen;
+    }
+  }
+}

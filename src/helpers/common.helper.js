@@ -56,10 +56,25 @@ const getTextEditorContent = (editor) => {
   };
 }
 
+const createFriendlyURL = (base, toReplace, identifier) => {
+  return base + 
+         toReplace
+         .toLowerCase()
+         .trim()
+
+         //replace any characters that are different from letters, numbers with hyphens
+         .replace(/[^a-z|0-9|-]+/g, '-')
+
+         //trim redundant hyphens from url
+         .replace(/^[-]*|[-]*$/gi, '') 
+         + '.' + identifier;
+}
+
 export {
   getFormData,
   formatResponse,
   getAvatarColor,
   timeElapsed,
-  getTextEditorContent
+  getTextEditorContent,
+  createFriendlyURL
 }

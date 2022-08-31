@@ -140,7 +140,7 @@
 
 <script>
   import { mapActions, mapState } from 'vuex';
-  import { getTextEditorContent, timeElapsed } from '../helpers/common.helper';
+  import { getTextEditorContent, timeElapsed, createFriendlyURL } from '../helpers/common.helper';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
   import Post from '@/common/components/Post.vue';
@@ -298,7 +298,9 @@
         this.pageError.message = response.messages[0];
       } else {
         this.updatePostsList(response);
+        history.replaceState({}, null, createFriendlyURL('/thread/', this.posts[0].title, this.posts[0].id));
       }
+
     }
   }
 </script>
