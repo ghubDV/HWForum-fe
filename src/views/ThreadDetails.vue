@@ -1,7 +1,7 @@
 <template>
   <section class="thread-details" v-if="!pageError.state">
-    <h2 class="thread-details__title text--hecto text--bold">
-      {{ thread.title }}
+    <h2 v-if="posts[0]" class="thread-details__title text--hecto text--bold">
+      {{ posts[0].title }}
     </h2>
 
     <!-- Thread main section -->
@@ -61,7 +61,7 @@
 
             <!-- Post editor open -->
 
-            <template v-else-if="editors[post.id] && editors[post.id].isThread === post.isThread" #content>
+            <template v-else #content>
               <div class="post__content">
                 <TextEditor
                   @getEditor="getEditor($event, post.id, post.content)"
@@ -121,7 +121,6 @@
           </Post>
         </template>
       </Card>
-
     </div>
   </section>
 
@@ -175,12 +174,11 @@
     },
 
     computed: {
-      ...mapState('thread', ['thread', 'comments']),
       ...mapState('auth', ['user'])
     },
 
     methods: {
-      ...mapActions('thread', ['createComment', 'getThreadById', 'getCommentsInThread', 'updatePost']),
+      ...mapActions('thread', ['createComment', 'getThreadAndComments', 'updatePost']),
       ...mapActions('profile', ['getProfile']),
       ...mapActions('common', ['sendNotification']),
 
@@ -205,8 +203,6 @@
             editor: editor
           };
         }
-
-        console.log(this.editors);
       },
 
       openEditor(post) {
@@ -220,21 +216,17 @@
       },
 
       async saveEdit(post) {
-        const editor = this.editors[post.id] ? this.editors[post.id].editor : this.editors.create.editor;
+        const editor = this.editors[post.id].editor;
 
         const content = getTextEditorContent(editor);
 
         const data = {
-          postID: post.id || null,
+          postID: post.id,
           content: content,
           isThread: post.isThread || false
         }
 
         const result = await this.updatePost(data);
-
-        if(result.type === 'success') {
-          post.content = content.html;
-        }
 
         this.sendNotification({
           type: 0,
@@ -244,9 +236,11 @@
           }
         })
 
-        if(post.id !== 'create') {
-          delete this.editors[post.id];
+        if(result.type === 'success') {
+          post.content = content.html;
         }
+
+        this.closeEditor(post.id);
       },
 
       async postComment() {
@@ -255,7 +249,7 @@
         const content = getTextEditorContent(editor);
 
         const newComment = {
-          thread: this.thread.id,
+          thread: this.posts[0].id,
           content: content
         };
 
@@ -270,14 +264,14 @@
         })
 
         if(result.type === 'success') {
-          await this.getCommentsInThread(this.thread.id);
-          this.updatePostsList();
+          const updatedPosts = [...await this.getThreadAndComments(this.posts[0].id)];
+          this.updatePostsList(updatedPosts);
           editor.setText('');
         }
       },
 
-      updatePostsList() {
-        this.posts = [this.thread, ...this.comments];
+      updatePostsList(posts) {
+        this.posts = [...posts];
         this.showList = true;
       },
 
@@ -288,22 +282,23 @@
 
     watch: {
       async 'user' (updatedUser) {
-        if(this.myProfile !== null) {
+        if(this.myProfile === null) {
           await this.getCurrentUser(updatedUser);
         }
       }
     },
 
     async mounted() {
-      const thread = await this.getThreadById(this.$route.params.id);
-      if(thread && thread.type === 'error') {
-        this.pageError.state = true;
-        this.pageError.message = thread.messages[0];
-      }
-
-      await this.getCommentsInThread(this.$route.params.id);
       await this.getCurrentUser(this.user);
-      this.updatePostsList();
+
+      const response = [...await this.getThreadAndComments(this.$route.params.id)];
+
+      if(response && response.type === 'error') {
+        this.pageError.state = true;
+        this.pageError.message = response.messages[0];
+      } else {
+        this.updatePostsList(response);
+      }
     }
   }
 </script>

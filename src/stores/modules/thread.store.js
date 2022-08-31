@@ -42,24 +42,17 @@ const actions = {
       return formatResponse(error);
     }
   },
-  
-  async getThreadById ({ commit }, threadID) {
-    try {
-      const response = await Thread.getThreadById(threadID);
-      response.data = {
-        ...response.data,
-        isThread: true
-      }
-      commit('UPDATE_THREAD', response.data);
-    } catch (error) {
-      return formatResponse(error);
-    }
-  },
 
-  async getCommentsInThread ({ commit }, threadID) {
+  async getThreadAndComments ({ commit }, threadID) {
     try {
-      const response = await Thread.getCommentsInThread(threadID);
-      commit('UPDATE_COMMENTS', response.data);
+      const response = await Thread.getThreadAndComments(threadID);
+
+      if(response.data) {
+        commit('UPDATE_THREAD', response.data[0]);
+        commit('UPDATE_COMMENTS', response.data.slice(1));
+      }
+
+      return response.data;
     } catch (error) {
       return formatResponse(error);
     }
