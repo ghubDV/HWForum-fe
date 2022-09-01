@@ -44,14 +44,27 @@
                     <Button
                       v-if="myProfile === post.profile.name"
                       @click="openEditor(post)"
-                      class="button button--link button--text-center text text--deci"
+                      class="button button--link button--text-center text text--centi"
                     >
                       <template #icon>
-                        <RenderSVG class="icon--tiny" icon="edit" />
+                        <RenderSVG class="icon--micro" icon="edit" />
                       </template>
 
                       <template #text>
                         Edit
+                      </template>
+                    </Button>
+
+                      <Button
+                        v-if="myProfile === post.profile.name && !post.isThread"
+                        class="button button--link button--text-center text text--centi"
+                      >
+                      <template #icon>
+                        <RenderSVG class="icon--micro" icon="delete" />
+                      </template>
+
+                      <template #text>
+                        Delete
                       </template>
                     </Button>
                   </div>
@@ -285,14 +298,15 @@
       },
 
       async toPage(page) {
-        this.updatePostsList(await this.getPosts(this.posts[0].id, page));
+        const thread = this.posts[0];
+        this.updatePostsList(await this.getPosts(thread.id, page));
 
         this.currentPage = page;
 
         history.replaceState(
           {}, 
           null, 
-          createFriendlyURL('/thread/', this.posts[0].title, this.posts[0].id, '?p=' + this.currentPage)
+          createFriendlyURL('/thread/', thread.title, thread.id, '?p=' + this.currentPage)
         );
 
         window.scrollTo({top: 0});
@@ -308,7 +322,8 @@
     },
 
     async mounted() {
-      const response = await this.getPosts(this.$route.params.id, parseInt(this.$route.query.p) || this.currentPage);
+      const queryPage = parseInt(this.$route.query.p);
+      const response = await this.getPosts(this.$route.params.id, queryPage || this.currentPage);
 
       await this.getCurrentUser();
 
@@ -318,11 +333,17 @@
       } else {
         this.updatePostsList(response);
         const thread = this.posts[0];
-        history.replaceState(
-          {}, 
-          null, 
-          createFriendlyURL('/thread/', thread.title, thread.id, this.pageSize < thread.commentsCount ? '?p=' + this.currentPage : '')
-        );
+        const multipage = this.pageSize < thread.commentsCount;
+
+        if(multipage) {
+          this.currentPage = queryPage && queryPage <= this.pageSize  ?  queryPage : this.currentPage;
+
+          history.replaceState(
+            {}, 
+            null, 
+            createFriendlyURL('/thread/', thread.title, thread.id, multipage ? '?p=' + this.currentPage : '')
+          );
+        }
       }
 
     }

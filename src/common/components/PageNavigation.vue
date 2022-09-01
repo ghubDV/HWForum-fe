@@ -3,7 +3,7 @@
     <Button
       v-for="(button, i) in backButtons"
       :disabled="currentPage === 1"
-      @click="button.pageAction === 'prev' ? toPage(currentPage - 1) : button.pageAction"
+      @click="button.pageAction === 'prev' ? toPage(currentPage - 1) : toPage(1)"
       :class="defaultClass + ' ' + button.class"
       :key="i"
     >
@@ -21,7 +21,7 @@
     <Button
       v-for="(button, i) in forwardButtons"
       :disabled="currentPage === pageCount"
-      @click="button.pageAction === 'next' ? toPage(currentPage + 1) : button.pageAction"
+      @click="button.pageAction === 'next' ? toPage(currentPage + 1) : toPage(pageCount)"
       :class="defaultClass + ' ' + button.class"
       :key="i"
     >
