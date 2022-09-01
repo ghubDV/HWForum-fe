@@ -1,29 +1,32 @@
 <template>
   <div class="pages">
-    <Button :disabled="currentPage === 1" @click="toPage(1)" class="pages__item pages__item--first button button--simple button--no-padding">
+    <Button
+      v-for="(button, i) in backButtons"
+      :disabled="currentPage === 1"
+      @click="button.pageAction === 'prev' ? toPage(currentPage - 1) : button.pageAction"
+      :class="defaultClass + ' ' + button.class"
+      :key="i"
+    >
       <template #icon>
-        <RenderSVG class="icon--micro" icon="first-page"/>
+        <RenderSVG class="icon--micro" :icon="button.icon"/>
       </template>
     </Button>
 
-    <Button :disabled="currentPage === 1" @click="toPage(currentPage - 1)" class="pages__item pages__item--previous button button--simple button--no-padding">
-      <template #icon>
-        <RenderSVG class="icon--micro" icon="arrow-prev"/>
-      </template>
-    </Button>
     <div
       class="pages__item text text--deci text--thick"
     >
       {{ currentPage }}
     </div>
-    <Button :disabled="currentPage === pageCount" @click="toPage(currentPage + 1)" class="pages__item pages__item--next button button--simple button--no-padding">
+
+    <Button
+      v-for="(button, i) in forwardButtons"
+      :disabled="currentPage === pageCount"
+      @click="button.pageAction === 'next' ? toPage(currentPage + 1) : button.pageAction"
+      :class="defaultClass + ' ' + button.class"
+      :key="i"
+    >
       <template #icon>
-        <RenderSVG class="icon--micro" icon="arrow-prev"/>
-      </template>
-    </Button>
-    <Button :disabled="currentPage === pageCount" @click="toPage(pageCount)" class="pages__item pages__item--last button button--simple button--no-padding">
-      <template #icon>
-        <RenderSVG class="icon--micro" icon="last-page"/>
+        <RenderSVG class="icon--micro" :icon="button.icon"/>
       </template>
     </Button>
   </div>
@@ -46,7 +49,33 @@
 
     data () {
       return {
-        currentPage: this.current || 1
+        currentPage: this.current || 1,
+        defaultClass: 'pages__item button button--simple button--no-padding',
+        backButtons: [
+          {
+            class: 'pages__item--first',
+            pageAction: 1,
+            icon: 'first-page'
+          },
+          {
+            class: 'pages__item--previous',
+            pageAction: 'prev',
+            icon: 'arrow-prev'
+          }
+        ],
+
+        forwardButtons: [
+        {
+            class: 'pages__item--next',
+            pageAction: 'next',
+            icon: 'arrow-prev'
+          },
+          {
+            class: 'pages__item--previous',
+            pageAction: this.pageCount,
+            icon: 'last-page'
+          }
+        ]
       }
     },
 

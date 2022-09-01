@@ -65,14 +65,14 @@
             <template v-else #content>
               <div class="post__content">
                 <TextEditor
-                  @getEditor="getEditor($event, post.id, post.content)"
+                  @getEditor="initEditor($event, post.id, post.content)"
                 />
                 <div class="post__content-extra">
                   <div></div>
                   <div class="post__content-controls">
                     <Button
                       class="button button--primary button--right button--text-center"
-                      @click="saveEdit(post)"
+                      @click="handlePost('updatePost', post.id, post)"
                     >
                       <template #text>
                         Save
@@ -117,11 +117,11 @@
               <div class="post__content">
                 <TextEditor
                   placeholder="Write your reply..."
-                  @getEditor="getEditor"
+                  @getEditor="initEditor"
                 />
                 <Button
                   class="button button--primary button--right button--text-center"
-                  @click="postComment"
+                  @click="handlePost('createComment', 'create')"
                 >
                   <template #text>
                     Post reply
@@ -204,18 +204,18 @@
 
       timeElapsed: timeElapsed,
 
-      async getCurrentUser(user) {
-        if(user.isLoggedIn) {
-          const profile = await this.getProfile(user.username);
+      async getCurrentUser() {
+        if(this.user.isLoggedIn) {
+          const profile = await this.getProfile(this.user.username);
           this.myProfile = profile.profileName;
         }
       },
 
       async getPosts(threadID, page) {
-        return [...await this.getThreadAndComments({threadID: threadID, page: page })]
+        return await this.getThreadAndComments({threadID: threadID, page: page });
       },
 
-      getEditor(editor, postID = undefined, content = null) {
+      initEditor(editor, postID = undefined, content = null) {
         if(postID) {
           editor.setHTML(content);
           this.editors[postID] = {
@@ -238,45 +238,24 @@
         }
       },
 
-      async saveEdit(post) {
-        const editor = this.editors[post.id].editor;
-
-        const content = getTextEditorContent(editor);
-
-        const data = {
-          postID: post.id,
-          content: content,
-          isThread: post.isThread || false
-        }
-
-        const result = await this.updatePost(data);
-
-        this.sendNotification({
-          type: 0,
-          message: {
-            type: result.type,
-            list: result.messages
-          }
-        })
-
-        if(result.type === 'success') {
-          post.content = content.html;
-        }
-
-        this.closeEditor(post.id);
+      closeEditor(postID) {
+        delete this.editors[postID];
       },
 
-      async postComment() {
-        const editor = this.editors.create.editor;
+      async handlePost(action, editorID, post = undefined) {
+        const editor = this.editors[editorID].editor;
 
         const content = getTextEditorContent(editor);
 
-        const newComment = {
-          thread: this.posts[0].id,
-          content: content
-        };
+        const affectedPost = post ? post : this.posts[0]
 
-        const result = await this.createComment(newComment);
+        const data = {
+          id: affectedPost.id,
+          content: content,
+          ...affectedPost.isThread && { isThread: affectedPost.isThread }
+        }
+
+        const result = await this[action](data);
 
         this.sendNotification({
           type: 0,
@@ -286,8 +265,15 @@
           }
         })
 
-        if(result.type === 'success') {
-          this.updatePostsList(await this.getPosts(this.posts[0].id, this.currentPage));
+        if(action === 'updatePost') {
+          if(result.type === 'success') {
+            affectedPost.content = content.html;
+          }
+          this.closeEditor(affectedPost.id);
+        }
+
+        if(action === 'createComment') {
+          this.updatePostsList(await this.getPosts(affectedPost.id, this.currentPage));
           editor.setText('');
         }
       },
@@ -296,10 +282,6 @@
         this.posts = [...posts];
         this.pageCount = Math.ceil(posts[0].commentsCount / this.pageSize);
         this.showList = true;
-      },
-
-      closeEditor(postID) {
-        delete this.editors[postID];
       },
 
       async toPage(page) {
@@ -326,19 +308,20 @@
     },
 
     async mounted() {
-      await this.getCurrentUser(this.user);
-
       const response = await this.getPosts(this.$route.params.id, parseInt(this.$route.query.p) || this.currentPage);
+
+      await this.getCurrentUser();
 
       if(response && response.type === 'error') {
         this.pageError.state = true;
         this.pageError.message = response.messages[0];
       } else {
         this.updatePostsList(response);
+        const thread = this.posts[0];
         history.replaceState(
           {}, 
           null, 
-          createFriendlyURL('/thread/', this.posts[0].title, this.posts[0].id, this.pageSize < this.posts[0].commentsCount ? '?p=' + this.currentPage : '')
+          createFriendlyURL('/thread/', thread.title, thread.id, this.pageSize < thread.commentsCount ? '?p=' + this.currentPage : '')
         );
       }
 
