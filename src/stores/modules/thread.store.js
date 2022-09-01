@@ -4,10 +4,14 @@ import { formatResponse,createFriendlyURL } from '@/helpers/common.helper';
 
 const state = {
   thread: {},
-  comments: []
+  comments: [],
+  pageSize: 3
 }
 
 const getters = {
+  getPageSize(state) {
+    return state.pageSize;
+  }
 }
 
 const mutations = {
@@ -43,9 +47,9 @@ const actions = {
     }
   },
 
-  async getThreadAndComments ({ commit }, threadID) {
+  async getThreadAndComments ({ commit }, { threadID, page }) {
     try {
-      const response = await Thread.getThreadAndComments(threadID);
+      const response = await Thread.getThreadAndComments({ threadID, pageSize: state.pageSize, page });
 
       if(response.data) {
         commit('UPDATE_THREAD', response.data[0]);

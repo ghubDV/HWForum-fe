@@ -17,10 +17,10 @@
 
   export default {
     components: {
-      Loader,
-      Navbar,
-      NotificationsBar
-    },
+    Loader,
+    Navbar,
+    NotificationsBar,
+},
 
     data () {
       return {

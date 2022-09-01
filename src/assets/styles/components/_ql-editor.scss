@@ -148,7 +148,8 @@
         blockquote {
           background-color: colors.$darkGrayAccentLight;
           border-left: dimensions.$normalRadius solid colors.$forestGreen;
-          padding: dimensions.$smallSpacing 1rem;
+          padding: 0 1rem;
+          margin: 0;
         }
 
         &::before {

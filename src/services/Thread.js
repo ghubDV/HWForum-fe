@@ -9,8 +9,8 @@ export default {
     return Api().post('createThread', credentials, { withCredentials: true });
   },
 
-  getThreadAndComments(threadID) {
-    return Api().get(`getThreadAndComments?threadID=${threadID}`);
+  getThreadAndComments({ threadID, pageSize, page }) {
+    return Api().post('getThreadAndComments', { threadID, pageSize, page });
   },
 
   updatePost(credentials) {

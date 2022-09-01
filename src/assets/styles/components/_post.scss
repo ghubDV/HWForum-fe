@@ -32,7 +32,8 @@
       blockquote {
         background-color: colors.$darkGrayAccentLight;
         border-left: dimensions.$normalRadius solid colors.$forestGreen;
-        padding: dimensions.$smallSpacing 1rem;
+        padding:0 1rem;
+        margin: 0;
       }
 
       ol {
@@ -93,7 +94,7 @@
     flex-direction: row;
 
     &__author {
-      width: calc(dimensions.$bigSpacing * 2);
+      width: calc(dimensions.$hugeSpacing * 2);
       word-break: break-all;
     }
   }

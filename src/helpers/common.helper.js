@@ -56,7 +56,7 @@ const getTextEditorContent = (editor) => {
   };
 }
 
-const createFriendlyURL = (base, toReplace, identifier) => {
+const createFriendlyURL = (base, toReplace, identifier, query = '') => {
   return base + 
          toReplace
          .toLowerCase()
@@ -67,7 +67,7 @@ const createFriendlyURL = (base, toReplace, identifier) => {
 
          //trim redundant hyphens from url
          .replace(/^[-]*|[-]*$/gi, '') 
-         + '.' + identifier;
+         + '.' + identifier + query;
 }
 
 export {

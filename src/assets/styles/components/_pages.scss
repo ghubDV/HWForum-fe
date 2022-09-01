@@ -4,16 +4,22 @@
 
 .pages {
   display: flex;
+  gap: dimensions.$normalSpacing;
+
+  &--center {
+    justify-content: center;
+  }
   
   &__item {
     display: grid;
     place-items: center;
-    border: borders.$darkishGray;
-    width: dimensions.$normalSpacing;
-    height: dimensions.$normalSpacing;
 
-    &--selected {
-      color: colors.$forestGreen;
+    &--previous, &--next {
+      transform-origin: center;
+    }
+
+    &--next {
+      transform: rotate(-180deg);
     }
   }
 }

@@ -9,7 +9,8 @@
     <div class="thread-details__list" v-show="showList">
       <Card
         class="card--no-padding"
-        v-for="(post, i) in posts" 
+        v-for="(post, i) in posts"
+        v-show="!(post.isThread && currentPage > 1)" 
         :key="i"
       >
         <template #content>
@@ -94,6 +95,16 @@
         </template>
       </Card>
 
+      <!-- Page navigation -->
+
+      <PageNavigation 
+        v-if="pageCount > 1" 
+        class="pages--center" 
+        :pageCount="pageCount"
+        :current="currentPage"
+        @toPage="toPage"
+      />
+
       <!-- Reply to thread section -->
 
       <Card
@@ -139,10 +150,11 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex';
+  import { mapActions, mapGetters, mapState } from 'vuex';
   import { getTextEditorContent, timeElapsed, createFriendlyURL } from '../helpers/common.helper';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
+  import PageNavigation from '@/common/components/PageNavigation.vue';
   import Post from '@/common/components/Post.vue';
   import RenderSVG from '@/common/components/Svg.vue';
   import TextEditor from '@/common/components/TextEditor.vue';
@@ -151,6 +163,7 @@
     components: {
       Button,
       Card,
+      PageNavigation,
       Post,
       RenderSVG,
       TextEditor
@@ -163,6 +176,10 @@
           message: ''
         },
 
+        currentPage: 1,
+
+        pageCount: 1,
+
         showList: false,
 
         editors: {},
@@ -174,7 +191,10 @@
     },
 
     computed: {
-      ...mapState('auth', ['user'])
+      ...mapState('auth', ['user']),
+      ...mapGetters({
+        pageSize: 'thread/getPageSize'
+      })
     },
 
     methods: {
@@ -189,6 +209,10 @@
           const profile = await this.getProfile(user.username);
           this.myProfile = profile.profileName;
         }
+      },
+
+      async getPosts(threadID, page) {
+        return [...await this.getThreadAndComments({threadID: threadID, page: page })]
       },
 
       getEditor(editor, postID = undefined, content = null) {
@@ -212,7 +236,6 @@
             ...post.isThread && {isThread: true}
           }
         }
-        console.log(this.editors)
       },
 
       async saveEdit(post) {
@@ -264,20 +287,34 @@
         })
 
         if(result.type === 'success') {
-          const updatedPosts = [...await this.getThreadAndComments(this.posts[0].id)];
-          this.updatePostsList(updatedPosts);
+          this.updatePostsList(await this.getPosts(this.posts[0].id, this.currentPage));
           editor.setText('');
         }
       },
 
       updatePostsList(posts) {
         this.posts = [...posts];
+        this.pageCount = Math.ceil(posts[0].commentsCount / this.pageSize);
         this.showList = true;
       },
 
       closeEditor(postID) {
         delete this.editors[postID];
       },
+
+      async toPage(page) {
+        this.updatePostsList(await this.getPosts(this.posts[0].id, page));
+
+        this.currentPage = page;
+
+        history.replaceState(
+          {}, 
+          null, 
+          createFriendlyURL('/thread/', this.posts[0].title, this.posts[0].id, '?p=' + this.currentPage)
+        );
+
+        window.scrollTo({top: 0});
+      }
     },
 
     watch: {
@@ -291,14 +328,18 @@
     async mounted() {
       await this.getCurrentUser(this.user);
 
-      const response = [...await this.getThreadAndComments(this.$route.params.id)];
+      const response = await this.getPosts(this.$route.params.id, parseInt(this.$route.query.p) || this.currentPage);
 
       if(response && response.type === 'error') {
         this.pageError.state = true;
         this.pageError.message = response.messages[0];
       } else {
         this.updatePostsList(response);
-        history.replaceState({}, null, createFriendlyURL('/thread/', this.posts[0].title, this.posts[0].id));
+        history.replaceState(
+          {}, 
+          null, 
+          createFriendlyURL('/thread/', this.posts[0].title, this.posts[0].id, this.pageSize < this.posts[0].commentsCount ? '?p=' + this.currentPage : '')
+        );
       }
 
     }
