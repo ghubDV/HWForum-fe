@@ -1,5 +1,6 @@
 @use '../base/variables/dimensions';
-@use '../base//variables/colors';
+@use '../base/variables/colors';
+@use '../base/variables/shadows';
 
 .notification-bar {
   position: fixed;
@@ -8,17 +9,20 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: calc(100% - dimensions.$largeSpacing);
+  width: 100%;
+  padding: 0 dimensions.$normalSpacing;
+  max-width: dimensions.$maxContent;
   min-height: dimensions.$navbarHeight;
 
   &__content {
     padding-right: dimensions.$largeSpacing;
+    box-shadow: shadows.$smoothShadow;
   }
 
   &__close {
     position: absolute;
     top: 50%;
-    right: calc(dimensions.$smallSpacing);
+    right: dimensions.$mediumSpacing;
     transform: translateY(-50%);
   }
 }

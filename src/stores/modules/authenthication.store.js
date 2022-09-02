@@ -9,6 +9,7 @@ const state = {
   user: {
     isLoggedIn: false,
     username: '',
+    profileName: null,
     avatar: ''
   },
 }
@@ -20,6 +21,10 @@ const getters = {
 
   getUsername (state) {
     return state.user.username;
+  },
+
+  getProfileName (state) {
+    return state.user.profileName
   },
 
   getAvatar (state) {
@@ -41,6 +46,7 @@ const mutations = {
       ...state.user,
       isLoggedIn: true,
       username: payload.username,
+      profileName: payload.profileName,
       avatar: localStorage.getItem('avatar') || getAvatarColor()
     }
   },
@@ -48,6 +54,7 @@ const mutations = {
   LOG_OUT (state) {
     state.user.isLoggedIn = false;
     state.user.username = '';
+    state.user.profileName = null;
     state.user.avatar = '';
     localStorage.removeItem('avatar');
   },
@@ -75,8 +82,11 @@ const actions = {
 
       localStorage.setItem('avatar', getAvatarColor());
 
+      const { username, profileName } = response.data;
+
       commit('LOG_IN', {
-        username: response.data.username
+        username: username,
+        profileName: profileName || null
       });
 
       Router.push(HOME.path);
@@ -168,8 +178,11 @@ const actions = {
     try {
       const response = await Auth.authorize();
 
+      const { username, profileName } = response.data
+      
       commit('LOG_IN', {
-        username: response.data.username
+        username: username,
+        profileName: profileName || null
       });
 
     } catch {
