@@ -47,6 +47,25 @@ const actions = {
     }
   },
 
+  async deletePost (_ctx, post) {
+    try {
+      const response = await Thread.deletePost(post);
+
+      return formatResponse(response);
+    } catch (error) {
+      return formatResponse(error);
+    }
+  },
+
+  async updatePost (_ctx, post) {
+    try {
+      const response = await Thread.updatePost(post);
+      return formatResponse(response);
+    } catch (error) {
+      return formatResponse(error);
+    }
+  },
+
   async getThreadAndComments ({ commit }, { threadID, page }) {
     try {
       const response = await Thread.getThreadAndComments({ threadID, pageSize: state.pageSize, page });
@@ -57,15 +76,6 @@ const actions = {
       }
 
       return response.data;
-    } catch (error) {
-      return formatResponse(error);
-    }
-  },
-
-  async updatePost(_ctx, post) {
-    try {
-      const response = await Thread.updatePost(post);
-      return formatResponse(response);
     } catch (error) {
       return formatResponse(error);
     }

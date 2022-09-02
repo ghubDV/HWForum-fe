@@ -57,6 +57,7 @@
 
                       <Button
                         v-if="myProfile === post.profile.name && !post.isThread"
+                        @click="handlePost('deletePost', post.id, post)"
                         class="button button--link button--text-center text text--centi"
                       >
                       <template #icon>
@@ -211,7 +212,7 @@
     },
 
     methods: {
-      ...mapActions('thread', ['createComment', 'getThreadAndComments', 'updatePost']),
+      ...mapActions('thread', ['createComment', 'deletePost', 'updatePost', 'getThreadAndComments']),
       ...mapActions('profile', ['getProfile']),
       ...mapActions('common', ['sendNotification']),
 
@@ -256,15 +257,25 @@
       },
 
       async handlePost(action, editorID, post = undefined) {
-        const editor = this.editors[editorID].editor;
+        
+        let editor = null;
 
-        const content = getTextEditorContent(editor);
+        let content = null;
+
+        if(this.editors[editorID]) {
+          editor = this.editors[editorID].editor || null;
+
+          content = getTextEditorContent(editor);
+        }
+
+        const thread = this.posts[0];
 
         const affectedPost = post ? post : this.posts[0]
 
         const data = {
           id: affectedPost.id,
-          content: content,
+          ...(action === 'deletePost' && { threadID: thread.id }),
+          ...(action !== 'deletePost' && { content }),
           ...affectedPost.isThread && { isThread: affectedPost.isThread }
         }
 
@@ -285,23 +296,31 @@
           this.closeEditor(affectedPost.id);
         }
 
-        if(action === 'createComment') {
-          this.updatePostsList(await this.getPosts(affectedPost.id, this.currentPage));
-          editor.setText('');
+        if(action === 'createComment' || action === 'deletePost') {
+          this.updatePostsList(await this.getPosts(thread.id, this.currentPage));
+          if(editor !== null) {
+            editor.setText('');
+          }
         }
       },
 
       updatePostsList(posts) {
         this.posts = [...posts];
         this.pageCount = Math.ceil(posts[0].commentsCount / this.pageSize);
+
+        if (this.currentPage > this.pageCount) {
+          this.currentPage = 1;
+        }
+
         this.showList = true;
       },
 
       async toPage(page) {
         const thread = this.posts[0];
-        this.updatePostsList(await this.getPosts(thread.id, page));
 
         this.currentPage = page;
+
+        this.updatePostsList(await this.getPosts(thread.id, page));
 
         history.replaceState(
           {}, 

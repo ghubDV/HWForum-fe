@@ -79,6 +79,12 @@
       }
     },
 
+    watch: {
+      current (newValue) {
+        this.currentPage = newValue;
+      }
+    },
+
     methods: {
       toPage(pageNumber) {
         this.currentPage = pageNumber;
