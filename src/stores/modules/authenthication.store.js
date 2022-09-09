@@ -61,6 +61,10 @@ const mutations = {
 
   UPDATE_USERNAME (state, payload) {
     state.user.username = payload;
+  },
+
+  UPDATE_PROFILE (state, payload) {
+    state.user.profileName = payload;
   }
 }
 

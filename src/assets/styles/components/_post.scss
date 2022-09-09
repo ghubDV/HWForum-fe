@@ -27,6 +27,11 @@
 
       a{
         color: colors.$forestGreen;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       blockquote {

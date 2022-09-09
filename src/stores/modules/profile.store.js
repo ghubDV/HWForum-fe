@@ -1,4 +1,5 @@
 import Profile from '@/services/Profile';
+import store from '@/stores';
 import { formatResponse } from '@/helpers/common.helper';
 
 const state = {
@@ -14,6 +15,7 @@ const actions = {
   async createProfile (_ctx, profile) {
     try {
       const response = await Profile.createProfile(profile);
+      store.commit('auth/UPDATE_PROFILE', profile.profileName);
 
       return formatResponse(response);
     } catch (error) {
@@ -33,6 +35,7 @@ const actions = {
   async updateProfile(_ctx, profile) {
     try {
       const response = await Profile.updateProfile(profile);
+      store.commit('auth/UPDATE_PROFILE', profile.profileName);
 
       return formatResponse(response);
     } catch (error) {
