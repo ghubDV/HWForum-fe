@@ -5,6 +5,7 @@ import { formatResponse,createFriendlyURL } from '@/helpers/common.helper';
 const state = {
   thread: {},
   comments: [],
+  pageCount: 1,
   pageSize: 3
 }
 
@@ -17,6 +18,7 @@ const getters = {
 const mutations = {
   UPDATE_THREAD(state, data) {
     state.thread = {...data};
+    state.pageCount = data.pageCount;
   },
 
   UPDATE_COMMENTS(state, data) {
@@ -74,8 +76,6 @@ const actions = {
         commit('UPDATE_THREAD', response.data[0]);
         commit('UPDATE_COMMENTS', response.data.slice(1));
       }
-
-      return response.data;
     } catch (error) {
       return formatResponse(error);
     }

@@ -1,7 +1,7 @@
 <template>
   <section class="thread-details" v-if="!pageError.state">
-    <h2 v-if="posts[0]" class="thread-details__title text--hecto text--bold">
-      {{ posts[0].title }}
+    <h2 v-if="thread" class="thread-details__title text--hecto text--bold">
+      {{ thread.title }}
     </h2>
 
     <!-- Thread main section -->
@@ -197,20 +197,17 @@
 
         currentPage: 1,
 
-        pageCount: 1,
-
         showList: false,
 
         editors: {},
 
-        posts: [],
-
-        myProfile: null
+        posts: []
       }
     },
 
     computed: {
       ...mapState('auth', ['user']),
+      ...mapState('thread', ['pageCount', 'thread', 'comments']),
       ...mapGetters({
         pageSize: 'thread/getPageSize'
       })
@@ -222,10 +219,6 @@
       ...mapActions('common', ['sendNotification']),
 
       timeElapsed: timeElapsed,
-
-      async getPosts(threadID, page) {
-        return await this.getThreadAndComments({threadID: threadID, page: page });
-      },
 
       initEditor(editor, postID = undefined, content = null) {
         if(postID) {
@@ -266,13 +259,12 @@
           content = getTextEditorContent(editor);
         }
 
-        const thread = this.posts[0];
 
-        const affectedPost = post ? post : this.posts[0]
+        const affectedPost = post ? post : this.thread
 
         const data = {
           id: affectedPost.id,
-          ...(action === 'deletePost' && { threadID: thread.id }),
+          ...(action === 'deletePost' && { threadID: this.thread.id }),
           ...(action !== 'deletePost' && { content }),
           ...affectedPost.isThread && { isThread: affectedPost.isThread }
         }
@@ -295,16 +287,16 @@
         }
 
         if(action === 'createComment' || action === 'deletePost') {
-          this.updatePostsList(await this.getPosts(thread.id, this.currentPage));
+          await this.updatePostsList(this.thread.id, this.currentPage);
           if(editor !== null) {
             editor.setText('');
           }
         }
       },
 
-      updatePostsList(posts) {
-        this.posts = [...posts];
-        this.pageCount = Math.ceil(posts[0].commentsCount / this.pageSize);
+      async updatePostsList(threadID, page) {
+        await this.getThreadAndComments({threadID: threadID, page: page });
+        this.posts = [this.thread, ...this.comments];
 
         if (this.currentPage > this.pageCount) {
           this.currentPage = 1;
@@ -314,18 +306,17 @@
       },
 
       async toPage(page) {
-        const thread = this.posts[0];
 
         this.showList = false;
 
         this.currentPage = page;
 
-        this.updatePostsList(await this.getPosts(thread.id, page));
+        await this.updatePostsList(this.thread.id, page);
 
         history.replaceState(
           {}, 
           null, 
-          createFriendlyURL('/thread/', thread.title, thread.id, '?p=' + this.currentPage)
+          createFriendlyURL('/thread/', this.thread.title, this.thread.id, '?p=' + this.currentPage)
         );
 
         window.scrollTo({top: 0});
@@ -334,25 +325,22 @@
 
     async mounted() {
       const queryPage = parseInt(this.$route.query.p);
-      const response = await this.getPosts(this.$route.params.id, queryPage || this.currentPage);
+      const response = await this.updatePostsList(this.$route.params.id, queryPage || this.currentPage);
 
       if(response && response.type === 'error') {
         this.pageError.state = true;
         this.pageError.message = response.messages[0];
       } else {
-        this.updatePostsList(response);
-        const thread = this.posts[0];
-        const multipage = this.pageSize < thread.commentsCount;
 
-        if(multipage) {
+        if(this.pageCount > 1) {
           this.currentPage = queryPage && queryPage <= this.pageCount  ?  queryPage : this.currentPage;
-
-          history.replaceState(
-            {}, 
-            null, 
-            createFriendlyURL('/thread/', thread.title, thread.id, multipage ? '?p=' + this.currentPage : '')
-          );
         }
+
+        history.replaceState(
+          {}, 
+          null, 
+          createFriendlyURL('/thread/', this.thread.title, this.thread.id, this.pageCount > 1 ? '?p=' + this.currentPage : '')
+        );
       }
 
     }
