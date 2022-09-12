@@ -59,6 +59,14 @@
         </CardItem>
       </template>
     </Card>
+
+    <PageNavigation 
+      v-if="threadList.pageCount > 1" 
+      class="pages--center" 
+      :pageCount="threadList.pageCount"
+      :current="currentPage"
+      @toPage="toPage"
+    />
   </section>
 
   <!-- Case when topic is not found -->
@@ -78,10 +86,11 @@
 
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex';
-  import { timeElapsed, createFriendlyURL } from '../helpers/common.helper';
+  import { timeElapsed, createFriendlyURL, setCurrentPage } from '../helpers/common.helper';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
   import CardItem from '@/common/components/CardItem.vue';
+  import PageNavigation from '@/common/components/PageNavigation.vue';
   import RenderSVG from '@/common/components/Svg.vue';
 
   export default {
@@ -89,12 +98,14 @@
       Button,
       Card,
       CardItem,
+      PageNavigation,
       RenderSVG
     },
 
     data() {
       return {
-        pageError: false
+        pageError: false,
+        currentPage: null,
       }
     },
 
@@ -109,16 +120,42 @@
       ...mapActions('topics', ['fetchThreadList']),
 
       timeElapsed: timeElapsed,
-      createFriendlyURL: createFriendlyURL
+      createFriendlyURL: createFriendlyURL,
+
+      async toPage(page) {
+        await this.fetchThreadList({
+          topicID: this.threadList.id,
+          page: page
+        });
+
+        this.currentPage = page <= this.threadList.pageCount ? page : 1;
+
+        history.replaceState(
+          {}, 
+          null, 
+          createFriendlyURL('/topic/', this.threadList.topic, this.threadList.id, '?p=' + this.currentPage)
+        );
+
+        window.scrollTo({top: 0});
+      }
     },
 
     async mounted() {
-      const response = await this.fetchThreadList(this.$route.params.id);
+      const response = await this.fetchThreadList({
+        topicID: this.$route.params.id,
+        page: this.$route.query.p || 1
+      });
+
       if(response && response.type === 'error') {
         this.pageError = true;
+      } else {
+        this.currentPage = setCurrentPage(this.$route.query.p, this.threadList.pageCount)
+        history.replaceState({}, null, createFriendlyURL(
+        '/topic/', 
+        this.threadList.topic, 
+        this.threadList.id,
+        this.threadList.pageCount > 1 ? '?p=' + this.currentPage : ''));
       }
-
-      history.replaceState({}, null, createFriendlyURL('/topic/', this.threadList.topic, this.threadList.id));
     }
   }
 </script>

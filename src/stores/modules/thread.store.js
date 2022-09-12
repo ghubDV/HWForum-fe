@@ -6,7 +6,7 @@ const state = {
   thread: {},
   comments: [],
   pageCount: 1,
-  pageSize: 3
+  pageSize: 10
 }
 
 const getters = {

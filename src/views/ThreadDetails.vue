@@ -170,7 +170,7 @@
 
 <script>
   import { mapActions, mapGetters, mapState } from 'vuex';
-  import { getTextEditorContent, timeElapsed, createFriendlyURL } from '../helpers/common.helper';
+  import { getTextEditorContent, timeElapsed, createFriendlyURL, setCurrentPage } from '../helpers/common.helper';
   import Button from '@/common/components/Button.vue';
   import Card from '@/common/components/Card.vue';
   import PageNavigation from '@/common/components/PageNavigation.vue';
@@ -195,7 +195,7 @@
           message: ''
         },
 
-        currentPage: 1,
+        currentPage: null,
 
         showList: false,
 
@@ -295,21 +295,22 @@
       },
 
       async updatePostsList(threadID, page) {
-        await this.getThreadAndComments({threadID: threadID, page: page });
-        this.posts = [this.thread, ...this.comments];
+        const response = await this.getThreadAndComments({threadID: threadID, page: page });
 
-        if (this.currentPage > this.pageCount) {
-          this.currentPage = 1;
+        if(response && response.type === 'error') {
+          this.pageError.state = true;
+          this.pageError.message = response.messages[0];
+        } else {
+          this.posts = [this.thread, ...this.comments];
+          this.showList = true;
         }
-
-        this.showList = true;
       },
 
       async toPage(page) {
 
         this.showList = false;
 
-        this.currentPage = page;
+        this.currentPage = page <= this.pageCount ? page : 1;
 
         await this.updatePostsList(this.thread.id, page);
 
@@ -324,17 +325,10 @@
     },
 
     async mounted() {
-      const queryPage = parseInt(this.$route.query.p);
-      const response = await this.updatePostsList(this.$route.params.id, queryPage || this.currentPage);
+      await this.updatePostsList(this.$route.params.id, this.$route.query.p || 1);
 
-      if(response && response.type === 'error') {
-        this.pageError.state = true;
-        this.pageError.message = response.messages[0];
-      } else {
-
-        if(this.pageCount > 1) {
-          this.currentPage = queryPage && queryPage <= this.pageCount  ?  queryPage : this.currentPage;
-        }
+      if(!this.pageError.state) {
+        this.currentPage = setCurrentPage(this.$route.query.p, this.pageCount)
 
         history.replaceState(
           {}, 
@@ -342,7 +336,6 @@
           createFriendlyURL('/thread/', this.thread.title, this.thread.id, this.pageCount > 1 ? '?p=' + this.currentPage : '')
         );
       }
-
     }
   }
 </script>

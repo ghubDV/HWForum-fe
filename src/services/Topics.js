@@ -13,7 +13,7 @@ export default {
     return Api().get('getTopicsCategories');
   },
 
-  getThreadsTopic(topic) {
-    return Api().get(`getThreadsTopic?topicID=${topic}`);
+  getThreadsTopic({ topicID, pageSize, page }) {
+    return Api().post(`getThreadsTopic`, { topicID, pageSize, page });
   }
 }

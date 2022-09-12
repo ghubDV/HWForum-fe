@@ -70,11 +70,17 @@ const createFriendlyURL = (base, toReplace, identifier, query = '') => {
          + '.' + identifier + query;
 }
 
+const setCurrentPage = (queryPage, pageCount) => {
+  const parsedQueryPage = parseInt(queryPage);
+  return parsedQueryPage && parsedQueryPage <= pageCount  ?  parsedQueryPage : 1;
+}
+
 export {
   getFormData,
   formatResponse,
   getAvatarColor,
   timeElapsed,
   getTextEditorContent,
-  createFriendlyURL
+  createFriendlyURL,
+  setCurrentPage
 }

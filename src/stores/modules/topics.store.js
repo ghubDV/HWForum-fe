@@ -3,7 +3,8 @@ import { formatResponse } from '@/helpers/common.helper';
 
 const state = {
   forumList: [],
-  threadList: {}
+  threadList: {},
+  threadPageSize: 10,
 }
 
 const getters = {
@@ -32,9 +33,13 @@ const actions = {
     }
   },
 
-  async fetchThreadList ({ commit }, topicID) {
+  async fetchThreadList ({ commit }, { topicID, page }) {
     try {
-      const { data } = await Topics.getThreadsTopic(topicID);
+      const { data } = await Topics.getThreadsTopic({ 
+        topicID, 
+        pageSize: state.threadPageSize,
+        page
+      });
       commit('UPDATE_THREADS', data);
     } catch(error) {
       return formatResponse(error);

@@ -21,5 +21,9 @@
     &--next {
       transform: rotate(-180deg);
     }
+
+    &--hidden {
+      visibility: hidden;
+    }
   }
 }

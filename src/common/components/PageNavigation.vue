@@ -4,7 +4,7 @@
       v-for="(button, i) in backButtons"
       :disabled="currentPage === 1"
       @click="button.pageAction === 'prev' ? toPage(currentPage - 1) : toPage(1)"
-      :class="defaultClass + ' ' + button.class"
+      :class="defaultClass + ' ' + button.class + ' ' + (currentPage === 1 ? 'pages__item--hidden' : '')"
       :key="i"
     >
       <template #icon>
@@ -22,7 +22,7 @@
       v-for="(button, i) in forwardButtons"
       :disabled="currentPage === pageCount"
       @click="button.pageAction === 'next' ? toPage(currentPage + 1) : toPage(pageCount)"
-      :class="defaultClass + ' ' + button.class"
+      :class="defaultClass + ' ' + button.class + ' ' + (currentPage === pageCount ? 'pages__item--hidden' : '')"
       :key="i"
     >
       <template #icon>
