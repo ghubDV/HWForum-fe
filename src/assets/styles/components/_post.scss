@@ -35,10 +35,31 @@
       }
 
       blockquote {
+        padding: 0 1rem;
+      }
+
+      .reply-quote {
+        list-style: none;
+        margin-bottom: 1rem;
+        
+        li {
+          padding: 0 1rem;
+
+          &:first-child {
+            background-color: colors.$darkGrayHover;
+            padding: 1rem;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+
+      blockquote, .reply-quote {
         background-color: colors.$darkGrayAccentLight;
         border-left: dimensions.$normalRadius solid colors.$forestGreen;
-        padding:0 1rem;
-        margin: 0;
+      }
+
+      p, blockquote, ul, .reply-quote {
+        font-size: 1rem;
       }
 
       ol {
@@ -86,11 +107,12 @@
     &-extra {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
 
     &-controls { 
       display: flex;
-      gap: dimensions.$smallSpacing;
+      gap: dimensions.$normalSpacing;
     }
   }
 }

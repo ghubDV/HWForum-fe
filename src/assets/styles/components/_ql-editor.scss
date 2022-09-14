@@ -136,20 +136,37 @@
             font-size: 2rem;
           }
         }
+        
+        blockquote {
+          padding: 0 1rem;
+        }
 
-        p, blockquote, ul {
+        .reply-quote {
+          list-style: none;
+          margin-bottom: 1rem;
+          
+          li {
+            padding: 0 1rem;
+  
+            &:first-child {
+              background-color: colors.$darkGrayHover;
+              padding: 1rem;
+              margin-bottom: 1rem;
+            }
+          }
+        }
+
+        blockquote, .reply-quote {
+          background-color: colors.$darkGrayAccentLight;
+          border-left: dimensions.$normalRadius solid colors.$forestGreen;
+        }
+
+        p, blockquote, ul, .reply-quote {
           font-size: 1rem;
         }
 
         a {
           color: colors.$forestGreen;
-        }
-
-        blockquote {
-          background-color: colors.$darkGrayAccentLight;
-          border-left: dimensions.$normalRadius solid colors.$forestGreen;
-          padding: 0 1rem;
-          margin: 0;
         }
 
         &::before {

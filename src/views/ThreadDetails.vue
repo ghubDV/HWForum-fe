@@ -44,6 +44,21 @@
 
                     <div class="post__content-extra">
                       <div class="post__content-controls">
+
+                        <Button
+                          v-if="user.profileName"
+                          @click="triggerReply(post)"
+                          class="button button--link button--text-center text text--centi"
+                        >
+                          <template #icon>
+                            <RenderSVG class="icon--micro" icon="reply" />
+                          </template>
+
+                          <template #text>
+                            Reply
+                          </template>
+                        </Button>
+
                         <Button
                           v-if="user.profileName === post.profile.name"
                           @click="openEditor(post)"
@@ -60,7 +75,7 @@
 
                           <Button
                             v-if="user.profileName === post.profile.name && !post.isThread"
-                            @click="handlePost('deletePost', post.id, post)"
+                            @click="handlePost('deletePost', post)"
                             class="button button--link button--text-center text text--centi"
                           >
                           <template #icon>
@@ -89,7 +104,7 @@
                       <div class="post__content-controls">
                         <Button
                           class="button button--primary button--right button--text-center"
-                          @click="handlePost('updatePost', post.id, post)"
+                          @click="handlePost('updatePost', post)"
                         >
                           <template #text>
                             Save
@@ -243,30 +258,48 @@
         }
       },
 
+      triggerReply(post) {
+        const quill = this.editors.create.editor.getQuill();
+
+        //remove the reply-quote from the comment that is replied to
+        const postContentHTML = new DOMParser().parseFromString(post.content, 'text/html');
+        if(postContentHTML.querySelector('.reply-quote')) {
+          postContentHTML.querySelector('.reply-quote').remove();
+        }
+
+        const content = post.profile.name + ' wrote:' + postContentHTML.body.innerHTML + '<p>&nbsp;</p>';
+
+        //remove any aditional line breaks that comes along with the conversion to delta
+        const delta = quill.clipboard.convert(content.replaceAll('<p><br></p>', ''));
+        quill.setContents(delta, 'silent');
+        quill.formatText(0, quill.getLength() - 1, 'reply-quote', true, 'silent');
+        quill.setSelection(quill.getLength(), 0);
+      },  
+
       closeEditor(postID) {
         delete this.editors[postID];
       },
 
-      async handlePost(action, editorID, post = undefined) {
-        
+      async handlePost(action, post) {
         let editor = null;
 
         let content = null;
 
-        if(this.editors[editorID]) {
-          editor = this.editors[editorID].editor || null;
+        if(action !== 'deletePost') {
+          if(this.editors[post.id]) {
+            editor = this.editors[post.id].editor || null;
+          } else {
+            editor = this.editors[post].editor || null;
+          }
 
           content = getTextEditorContent(editor);
         }
 
-
-        const affectedPost = post ? post : this.thread
-
         const data = {
-          id: affectedPost.id,
-          ...(action === 'deletePost' && { threadID: this.thread.id }),
+          ...post.id && { id: post.id },
+          ...(action !== 'updatePost' && { threadID: this.thread.id }),
           ...(action !== 'deletePost' && { content }),
-          ...affectedPost.isThread && { isThread: affectedPost.isThread }
+          ...post.isThread && { isThread: post.isThread }
         }
 
         const result = await this[action](data);
@@ -281,9 +314,9 @@
 
         if(action === 'updatePost') {
           if(result.type === 'success') {
-            affectedPost.content = content.html;
+            post.content = content.html;
           }
-          this.closeEditor(affectedPost.id);
+          this.closeEditor(post.id);
         }
 
         if(action === 'createComment' || action === 'deletePost') {

@@ -11,37 +11,46 @@
 </template>
 
 <script>
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
+  import { QuillEditor, Quill } from '@vueup/vue-quill'
+  import { ReplyQuoteContainer, SingleQuote } from './EditorComponents/ReplyQuote';
+  import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
-export default {
-  props: {
-    placeholder: String
-  },
+  Quill.register({
+    'formats/reply-quote': ReplyQuoteContainer,
+    'formats/single-quote': SingleQuote
+  });
 
-  components: {
-    QuillEditor
-  },
+  export default {
+    props: {
+      placeholder: String
+    },
 
-  data () {
-    return {
-      options: {
-        modules: {
-          toolbar: [
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'align': [] }],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            ['blockquote', 'link'],
-            [{ 'color': [] }],
-            ['clean']
-          ]
+    components: {
+      QuillEditor
+    },
+
+    data () {
+      return {
+        editor: null,
+        options: {
+          modules: {
+            toolbar: [
+              [{ 'size': ['small', false, 'large', 'huge'] }],
+              ['bold', 'italic', 'underline', 'strike'],
+              [{ 'align': [] }],
+              [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+              ['blockquote', 'link'],
+              [{ 'color': [] }],
+              ['clean']
+            ],
+          },
         },
-      },
-      editorContent: ''
+        editorContent: ''
+      }
+    },
+    mounted() {
     }
-  },
-}
+  }
 </script>
 
 <style lang="scss">
