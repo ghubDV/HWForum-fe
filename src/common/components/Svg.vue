@@ -1,22 +1,25 @@
 <template>
-  <img class="icon" :src="asset" />
+  <component :is="svg"></component>
 </template>
 
 <script>
+  import { defineAsyncComponent } from 'vue'
   export default {
+    props: {
+      icon: String
+    },
+
+    computed: {
+      svg() {
+        return defineAsyncComponent(() => import(`@/assets/icons/${this.icon}.svg?inline`));
+      }
+    },
+
     data() {
       return {
         asset: null
       }
     },
-
-    props: {
-      icon: String
-    },
-
-    mounted() {
-      this.asset = require(`@/assets/icons/${this.icon}.svg`);
-    }
   }
 </script>
 
