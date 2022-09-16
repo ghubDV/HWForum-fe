@@ -36,7 +36,7 @@
               :placeholder="input.placeholder"
             />
           </div>
-          <TextEditor 
+          <NewTextEditor 
             @getEditor="getEditor"
             placeholder="Provide a description to your thread"
           />
@@ -66,7 +66,7 @@
   import Form from '@/common/components/Form.vue';
   import Input from '@/common/components/Input.vue';
   import Select from '@/common/components/Select.vue';
-  import TextEditor from '@/common/components/TextEditor.vue';
+  import NewTextEditor from '@/common/components/NewTextEditor.vue';
   import ValidationList from '@/common/components/ValidationList.vue';
 
   export default {
@@ -76,7 +76,7 @@
       Form,
       Input,
       Select,
-      TextEditor,
+      NewTextEditor,
       ValidationList
     },
 

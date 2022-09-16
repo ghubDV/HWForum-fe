@@ -12,6 +12,11 @@
     height: dimensions.$iconTiny;
   }
 
+  &--normal {
+    width: dimensions.$normalSpacing;
+    height: dimensions.$normalSpacing;
+  }
+
   &--small, &--medium {
     width: dimensions.$iconSmall;
     height: dimensions.$iconSmall;

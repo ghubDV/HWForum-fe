@@ -38,21 +38,64 @@ const getAvatarColor = () => {
 }
 
 const timeElapsed = (time) => {
-  const moment = require('moment');
-  const targetDate = moment(new Date(time));
-  const daysFromTarget = moment(new Date()).diff(targetDate, 'days');
+  const targetDate = new Date(time);
+  const now = new Date();
 
-  if(daysFromTarget > 0) {
-    return targetDate.format('MMM Do, H:mm A')
+  const milliseconds = now.getTime() - targetDate.getTime();
+  const seconds = Math.floor(milliseconds / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+
+  if (hours >= 24) {
+    const [, month, dayNum, , clock] = targetDate.toString().split(' ');
+    const [ hour ] = clock.split(':');
+    const suffixedDay = createNumberSuffix(parseInt(dayNum));
+
+    return `${month} ${suffixedDay}, ${clock.slice(0, -3)} ${parseInt(hour) >= 12 ? 'PM' : 'AM'}`;
+  } else {
+    if(minutes === 0 && hours === 0) {
+      return 'a few seconds ago';
+    }
+
+    if(minutes > 0 && hours === 0) {
+      return `${minutes === 1 ? 'a minute ago' : `${minutes} minutes ago`}`;
+    }
+
+    if(hours > 0) {
+      return `${hours === 1 ? 'an hour ago' : `${hours} hours ago`}`;
+    }
+  }
+}
+
+const createNumberSuffix = (number) => {
+  const lastDigit = number % 10;
+  let suffixedNumber = number.toString();
+  if(number % 100 >= 10 && number % 100 <= 13) {
+    suffixedNumber += 'th';
+  } else {
+    switch (lastDigit) {
+      case 1:
+        suffixedNumber += 'st';
+        break;
+      case 2:
+        suffixedNumber += 'nd';
+        break;
+      case 3:
+        suffixedNumber += 'rd';
+        break;
+      default: 
+        suffixedNumber += 'th';
+        break;
+    }
   }
 
-  return moment(new Date(time)).fromNow();
+  return suffixedNumber;
 }
 
 const getTextEditorContent = (editor) => {
   return {
     text: editor.getText(),
-    html: editor.getHTML()
+    html: editor.getHTML().replaceAll(/(<(?!\/)[^>]+>)+(<\/[^>]+>)+/g, '<p><br></p>')
   };
 }
 
@@ -63,7 +106,7 @@ const createFriendlyURL = (base, toReplace, identifier, query = '') => {
          .trim()
 
          //replace any characters that are different from letters, numbers with hyphens
-         .replace(/[^a-z|0-9|-]+/g, '-')
+         .replace(/[^a-z|0-9]+/g, '-')
 
          //trim redundant hyphens from url
          .replace(/^[-]*|[-]*$/gi, '') 

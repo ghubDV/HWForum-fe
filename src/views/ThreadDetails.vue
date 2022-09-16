@@ -73,10 +73,10 @@
                           </template>
                         </Button>
 
-                          <Button
-                            v-if="user.profileName === post.profile.name && !post.isThread"
-                            @click="handlePost('deletePost', post)"
-                            class="button button--link button--text-center text text--centi"
+                        <Button
+                          v-if="user.profileName === post.profile.name && !post.isThread"
+                          @click="handlePost('deletePost', post)"
+                          class="button button--link button--text-center text text--centi"
                           >
                           <template #icon>
                             <RenderSVG class="icon--micro" icon="delete" />
@@ -96,7 +96,7 @@
 
                 <template v-else #content>
                   <div class="post__content">
-                    <TextEditor
+                    <NewTextEditor
                       @getEditor="initEditor($event, post.id, post.content)"
                     />
                     <div class="post__content-extra">
@@ -149,8 +149,7 @@
           <Post>
             <template #content>
               <div class="post__content">
-                <TextEditor
-                  placeholder="Write your reply..."
+                <NewTextEditor 
                   @getEditor="initEditor"
                 />
                 <Button
@@ -191,17 +190,17 @@
   import PageNavigation from '@/common/components/PageNavigation.vue';
   import Post from '@/common/components/Post.vue';
   import RenderSVG from '@/common/components/Svg.vue';
-  import TextEditor from '@/common/components/TextEditor.vue';
+  import NewTextEditor from '@/common/components/NewTextEditor.vue';
 
   export default {
     components: {
-      Button,
-      Card,
-      PageNavigation,
-      Post,
-      RenderSVG,
-      TextEditor
-    },
+    Button,
+    Card,
+    PageNavigation,
+    Post,
+    RenderSVG,
+    NewTextEditor
+},
 
     data () {
       return {
@@ -237,7 +236,7 @@
 
       initEditor(editor, postID = undefined, content = null) {
         if(postID) {
-          editor.setHTML(content);
+          editor.commands.setContent(content);
           this.editors[postID] = {
             ...this.editors[postID],
             editor: editor
@@ -259,21 +258,8 @@
       },
 
       triggerReply(post) {
-        const quill = this.editors.create.editor.getQuill();
-
-        //remove the reply-quote from the comment that is replied to
-        const postContentHTML = new DOMParser().parseFromString(post.content, 'text/html');
-        if(postContentHTML.querySelector('.reply-quote')) {
-          postContentHTML.querySelector('.reply-quote').remove();
-        }
-
-        const content = post.profile.name + ' wrote:' + postContentHTML.body.innerHTML + '<p>&nbsp;</p>';
-
-        //remove any aditional line breaks that comes along with the conversion to delta
-        const delta = quill.clipboard.convert(content.replaceAll('<p><br></p>', ''));
-        quill.setContents(delta, 'silent');
-        quill.formatText(0, quill.getLength() - 1, 'reply-quote', true, 'silent');
-        quill.setSelection(quill.getLength(), 0);
+        const editor = this.editors.create.editor;
+        editor.chain().focus().insertContent(`<blockquote>${post.content}</blockquote>`).run();
       },  
 
       closeEditor(postID) {
@@ -322,7 +308,7 @@
         if(action === 'createComment' || action === 'deletePost') {
           await this.updatePostsList(this.thread.id, this.currentPage);
           if(editor !== null) {
-            editor.setText('');
+            editor.commands.setContent('');
           }
         }
       },

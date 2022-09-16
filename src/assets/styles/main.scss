@@ -11,6 +11,7 @@ html, body, .ql-toolbar, .ql-container , * {
 
 html, body {
   color: colors.$fontDefault;
+  word-break: break-word;
 }
 
 body {
@@ -70,4 +71,22 @@ ol, ul {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+//scroll bar styling
+::-webkit-scrollbar {
+  width: dimensions.$normalRadius;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  border-radius: 99vw;
+  background: colors.$davysGray; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: colors.$deepSilver; 
 }

@@ -1,0 +1,115 @@
+@use '../base/variables/borders';
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/shadows';
+
+.editor {
+  border: borders.$editor;
+  border-radius: dimensions.$largeRadius;
+
+  &__header, &__content {
+    padding: dimensions.$smallSpacing;
+  }
+
+  &__header {
+    display: flex;
+    gap: dimensions.$smallSpacing;
+    flex-wrap: wrap;
+    border-bottom: borders.$editor;
+  }
+
+  &__control {
+    position: relative;
+    display: flex;
+
+    &.active {
+      path {
+        &:last-child {
+          fill: colors.$forestGreen;
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      path {
+        &:last-child {
+          fill: colors.$forestGreen;
+        }
+      }
+    }
+  }
+
+  &__content {
+    div, .ProseMirror {
+      height: dimensions.$editor;
+      max-height: dimensions.$editor;
+    }
+
+    .ProseMirror {
+      overflow-y: auto;
+      &-focused {
+        outline: none;
+      }
+
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+      
+
+      blockquote {
+        padding: 1rem;
+        background-color: colors.$darkGrayAccentLight;
+        box-shadow: shadows.$smallShadow;
+        border-left: dimensions.$normalRadius solid colors.$forestGreen;
+      }
+
+      p, blockquote, ul, ol {
+        font-size: 1rem;
+      }
+
+      a {
+        color: colors.$forestGreen;
+      }
+
+      ol {
+        list-style-type: decimal;
+      }
+
+      ul {
+        list-style-type: disc;
+      }
+
+      ol, ul {
+        list-style-position: inside;
+        padding: 0 1rem;
+
+        p {
+          display: inline;
+        }
+      }
+
+      pre {
+        display: flex;
+      }
+
+      code {
+        font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+      }
+
+      &::before {
+        color: rgba(colors.$fontDefault, .4);
+        font-style: normal;
+      }
+    }
+  }
+}

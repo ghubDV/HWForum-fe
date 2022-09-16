@@ -1,6 +1,7 @@
 @use '../base/variables/colors';
 @use '../base/variables/dimensions';
 @use '../base/variables/display';
+@use '../base/variables/shadows';
 
 .post {
   display: flex;
@@ -25,7 +26,7 @@
     &-main {
       flex: 1;
 
-      a{
+      a {
         color: colors.$forestGreen;
         text-decoration: none;
 
@@ -34,31 +35,26 @@
         }
       }
 
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
       blockquote {
-        padding: 0 1rem;
-      }
-
-      .reply-quote {
-        list-style: none;
-        margin-bottom: 1rem;
-        
-        li {
-          padding: 0 1rem;
-
-          &:first-child {
-            background-color: colors.$darkGrayHover;
-            padding: 1rem;
-            margin-bottom: 1rem;
-          }
-        }
-      }
-
-      blockquote, .reply-quote {
+        padding: 1rem;
         background-color: colors.$darkGrayAccentLight;
+        box-shadow: shadows.$smallShadow;
         border-left: dimensions.$normalRadius solid colors.$forestGreen;
       }
 
-      p, blockquote, ul, .reply-quote {
+      p, blockquote, ul {
         font-size: 1rem;
       }
 
@@ -71,36 +67,8 @@
         margin-left: dimensions.$smallSpacing;
       }
 
-      .ql-align {
-        &-center {
-          text-align: center;
-        }
-
-        &-right {
-          text-align: right;
-        }
-
-        &-left {
-          text-align: left;
-        }
-
-        &-justify {
-          text-align: justify;
-        }
-      }
-
-      .ql-size {
-        &-small {
-          font-size: .75rem;
-        }
-
-        &-large {
-          font-size: 1.5rem;
-        }
-
-        &-huge {
-          font-size: 2rem;
-        }
+      code {
+        font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
       }
     }
 

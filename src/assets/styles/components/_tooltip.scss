@@ -1,0 +1,35 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+@use '../base/variables/shadows';
+@use '../base/variables/zindex';
+
+.tooltip {
+  background-color: colors.$darkGrayAccent;
+  box-shadow: shadows.$smoothShadow;
+  padding: dimensions.$smallSpacing;
+  display: flex;
+  gap: dimensions.$smallSpacing;
+  width: calc((dimensions.$bigSpacing * 4) + dimensions.$normalSpacing);
+  z-index: zindex.$popups;
+  position: absolute;
+
+  &--mb {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &__color-picker {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__color {
+    width: calc(dimensions.$normalSpacing + dimensions.$normalRadius);
+    height: calc(dimensions.$normalSpacing + dimensions.$normalRadius);
+
+    &:hover {
+      border: 1px solid black;
+    }
+  }
+}
