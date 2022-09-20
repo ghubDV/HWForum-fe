@@ -10,37 +10,66 @@
         <Svg class="icon--normal" @click="editorCommand(command)" :icon="editorIcons[i]"></Svg>
 
         <Tooltip 
-          v-if="command.hasTooltip"
           v-show="showTooltip === command.hasTooltip"
           :type="command.tooltip"
           class="tooltip--mb"
         >
           <template #content>
-            <Input
+            <Dropdown
               v-if="command.tooltip === 'input'"
-              class="input__wrapper--auto"
-              extraClass="input--narrow"
-              type="text"
-              :name="command.hasTooltip"
-              :value="editor.getAttributes('link').href"
-              @getInput="getInput"
-            />
-            <div 
-              v-if="command.tooltip === 'picker'"
-              class="tooltip__color-picker"
+              class="dropdown--row dropdown--gap"
             >
-              <div v-for="(color, i) in command.colors" @click="getTooltipData(command, color)" class="tooltip__color" :key="i" :style="{ backgroundColor: color }" />
-            </div>
-          </template>
-          <template #extra>
-            <Button @click="getTooltipData(command)" class="button button--link">
-              <template #text>
-                Save
+              <template #dropdown-item>
+                <Input
+                  v-if="command.tooltip === 'input'"
+                  class="input__wrapper--auto"
+                  extraClass="input--narrow"
+                  type="text"
+                  :name="command.hasTooltip"
+                  :value="editor.getAttributes('link').href"
+                  @getInput="getInput"
+                />
+                <Button @click="getTooltipData(command)" class="button button--link">
+                  <template #text>
+                    Save
+                  </template>
+                </Button>
               </template>
-            </Button>
+            </Dropdown>
+
+            <Dropdown 
+              v-if="command.tooltip === 'colorPicker'"
+              class="dropdown--row"
+            >
+              <template #dropdown-item>
+                <div 
+                  v-for="(color, i) in command.colors" 
+                  @click="getTooltipData(command, color)" 
+                  class="dropdown__color-item" 
+                  :key="i" 
+                  :style="{ backgroundColor: color,  border: editor.isActive('textStyle', {color: color}) ? '1px solid black' : '' }" 
+                />
+              </template>
+            </Dropdown>
+
+            <Dropdown 
+              v-if="command.tooltip === 'fontPicker'"
+              class="dropdown--column dropdown--auto"
+            >
+              <template #dropdown-item>
+                <div 
+                  v-for="(size, i) in command.sizes" 
+                  @click="getTooltipData(command, size)" 
+                  class="dropdown__list-item" 
+                  :key="i" 
+                  :style="{ fontSize: size, color: editor.isActive('textStyle', {fontSize: size}) ? '#4DA167' : '' }"
+                >
+                  {{ size.slice(0, -2) }}
+                </div>
+              </template>
+            </Dropdown>
           </template>
         </Tooltip>
-
       </div>
     </div>
     <div class="editor__content">
@@ -59,8 +88,8 @@ import Bold from '@tiptap/extension-bold';
 import Italic from '@tiptap/extension-italic';
 import Underline from '@tiptap/extension-underline';
 import Strike from '@tiptap/extension-strike';
+import FontSize from 'tiptap-extension-font-size';
 import { Color } from '@tiptap/extension-color'
-import Heading from '@tiptap/extension-heading';
 import TextAlign from '@tiptap/extension-text-align'
 import OrderedList from '@tiptap/extension-ordered-list';
 import BulletList from '@tiptap/extension-bullet-list';
@@ -71,6 +100,7 @@ import Link from '@tiptap/extension-link';
 import ReplyQuote from './editor-extensions/ReplyQuoteExtension';
 import Svg from '@/common/components/Svg.vue';
 import Button from './Button.vue';
+import Dropdown from './Dropdown.vue';
 import Input from './Input.vue';
 import Tooltip from './Tooltip.vue';
 import { editor } from '@/common/schemas/icon.schema';
@@ -81,8 +111,9 @@ export default {
     EditorContent,
     Svg,
     Button,
+    Dropdown,
     Input,
-    Tooltip
+    Tooltip,
 },
 
   data() {
@@ -103,7 +134,7 @@ export default {
       }
 
       if(command.hasTooltip) {
-        this.showTooltip = !this.showTooltip ? command.hasTooltip : null;
+        this.showTooltip = !this.showTooltip || this.showTooltip !== command.hasTooltip ? command.hasTooltip : null;
         return;
       }
 
@@ -119,9 +150,7 @@ export default {
       let args;
       if(command.hasTooltip === 'link') {
         args = { href: this.input };
-      }
-
-      if(command.hasTooltip === 'color') {
+      } else {
         args = additional;
       }
 
@@ -145,13 +174,11 @@ export default {
         Italic,
         Underline,
         Strike,
+        FontSize,
         Color,
-        Heading.configure({
-          levels: [1, 2, 3]
-        }),
         TextAlign.configure({
           alignments: ['left', 'center', 'right'],
-          types: ['heading', 'paragraph'],
+          types: ['paragraph'],
         }),
         OrderedList,
         BulletList,

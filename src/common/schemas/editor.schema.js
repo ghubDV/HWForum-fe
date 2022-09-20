@@ -5,9 +5,7 @@ const controls = {
     ['underline'],
     ['strike'],
     null,
-    ['heading', { level: 1 }],
-    ['heading', { level: 2 }],
-    ['heading', { level: 3 }],
+    null,
     [{ textAlign: 'left' }],
     [{ textAlign: 'center' }],
     [{ textAlign: 'right' }],
@@ -25,9 +23,21 @@ const controls = {
     'toggleUnderline',
     'toggleStrike',
     {
+      name: 'setFontSize',
+      hasTooltip: 'fontSize',
+      tooltip: 'fontPicker',
+      sizes: [
+        "12px",
+        "16px",
+        "20px",
+        "28px",
+        "36px",
+      ]
+    },
+    {
       name: 'setColor',
       hasTooltip: 'color',
-      tooltip: 'picker',
+      tooltip: 'colorPicker',
       colors: [
         "#61BD6D",
         "#1ABC9C",
@@ -54,18 +64,6 @@ const controls = {
         "#7C706B",
         "#D1D5D8"
       ]
-    },
-    {
-      name: 'toggleHeading',
-      args: { level: 1 } 
-    },
-    {
-      name: 'toggleHeading',
-      args: { level: 2 } 
-    },
-    {
-      name: 'toggleHeading',
-      args: { level: 3 } 
     },
     {
       name: 'setTextAlign',

@@ -1,0 +1,46 @@
+@use '../base/variables/colors';
+@use '../base/variables/dimensions';
+
+.dropdown {
+  display: flex;
+  width: calc(dimensions.$bigSpacing * 4);
+
+  &--narrow {
+    width: calc(dimensions.$bigSpacing * 2);
+  }
+
+  &--auto {
+    width: auto;
+  }
+
+  &--row {
+    flex-wrap: wrap;
+  }
+
+  &--column {
+    flex: 1;
+    flex-direction: column;
+  }
+
+  &--gap {
+    gap: dimensions.$smallSpacing;
+  }
+
+  &__color-item {
+    width: calc(dimensions.$normalSpacing + dimensions.$normalRadius);
+    height: calc(dimensions.$normalSpacing + dimensions.$normalRadius);
+  
+    &:hover {
+      border: 1px solid black;
+    }
+  }
+
+  &__list-item {
+    font-weight: bold;
+    word-break: normal;
+
+    &:hover {
+      color: colors.$forestGreen;
+    }
+  }
+}

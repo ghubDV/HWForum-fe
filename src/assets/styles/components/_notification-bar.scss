@@ -1,6 +1,7 @@
 @use '../base/variables/dimensions';
 @use '../base/variables/colors';
 @use '../base/variables/shadows';
+@use '../base/variables/zindex';
 
 .notification-bar {
   position: fixed;
@@ -13,6 +14,7 @@
   padding: 0 dimensions.$normalSpacing;
   max-width: dimensions.$maxContent;
   min-height: dimensions.$navbarHeight;
+  z-index: zindex.$notification;
 
   &__content {
     padding-right: dimensions.$largeSpacing;

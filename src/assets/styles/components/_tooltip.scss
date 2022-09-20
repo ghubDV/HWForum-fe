@@ -9,7 +9,6 @@
   padding: dimensions.$smallSpacing;
   display: flex;
   gap: dimensions.$smallSpacing;
-  width: calc((dimensions.$bigSpacing * 4) + dimensions.$normalSpacing);
   z-index: zindex.$popups;
   position: absolute;
 
@@ -17,19 +16,5 @@
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-  }
-
-  &__color-picker {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__color {
-    width: calc(dimensions.$normalSpacing + dimensions.$normalRadius);
-    height: calc(dimensions.$normalSpacing + dimensions.$normalRadius);
-
-    &:hover {
-      border: 1px solid black;
-    }
   }
 }
