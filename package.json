@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@tiptap/extension-color": "*",
+    "@tiptap/extension-history": "*",
     "@tiptap/extension-link": "*",
     "@tiptap/extension-text-align": "*",
     "@tiptap/extension-text-style": "*",

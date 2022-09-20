@@ -97,6 +97,7 @@ import ListItem from '@tiptap/extension-list-item'
 import Blockquote from '@tiptap/extension-blockquote';
 import CodeBlock from '@tiptap/extension-code-block';
 import Link from '@tiptap/extension-link';
+import History from '@tiptap/extension-history';
 import ReplyQuote from './editor-extensions/ReplyQuoteExtension';
 import Svg from '@/common/components/Svg.vue';
 import Button from './Button.vue';
@@ -187,6 +188,9 @@ export default {
         CodeBlock,
         Link.configure({
           openOnClick: false
+        }),
+        History.configure({
+          depth: 10
         }),
         ReplyQuote
       ],
