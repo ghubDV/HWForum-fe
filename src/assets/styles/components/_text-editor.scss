@@ -42,7 +42,7 @@
   }
 
   &__content {
-    div, .ProseMirror {
+    > div, .ProseMirror {
       height: dimensions.$editor;
       max-height: dimensions.$editor;
     }
@@ -68,6 +68,7 @@
 
       blockquote {
         padding: 1rem;
+        margin-bottom: 1rem;
         background-color: colors.$darkGrayAccentLight;
         box-shadow: shadows.$smallShadow;
         border-left: dimensions.$normalRadius solid colors.$forestGreen;

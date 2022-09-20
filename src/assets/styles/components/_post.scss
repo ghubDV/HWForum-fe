@@ -49,6 +49,7 @@
 
       blockquote {
         padding: 1rem;
+        margin-bottom: 1rem;
         background-color: colors.$darkGrayAccentLight;
         box-shadow: shadows.$smallShadow;
         border-left: dimensions.$normalRadius solid colors.$forestGreen;
@@ -69,6 +70,14 @@
 
       code {
         font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New;
+      }
+
+      reply-quote {
+        display:block;
+        padding: 1rem;
+        background-color: colors.$davysGray;
+        margin: -1rem -1rem 1rem -1rem;
+        font-weight: bold;
       }
     }
 
