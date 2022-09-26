@@ -1,5 +1,6 @@
 @use '../base/variables/colors';
 @use '../base/variables/dimensions';
+@use '../base/variables/zindex';
 
 .loader {
   position: fixed;
@@ -8,6 +9,7 @@
   height: dimensions.$loaderHeight;
   background-color: colors.$forestGreen;
   transition: transform .5s ease;
+  z-index: zindex.$loader;
 
   &--0 {
     transform: translateX(-100%);
