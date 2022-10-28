@@ -1,39 +1,41 @@
 <template>
-  <Card 
-    v-for="(category, i) in forumList"
-    class="forum-list card--small-padding"
-    :key="i"
-  >
+  <div v-if="fetched">
+    <Card 
+      v-for="(category, i) in forumList"
+      class="forum-list card--small-padding"
+      :key="i"
+    >
 
-    <template #header>
-      <div class="card__header text--hecto text--bold">
-        {{ category.name }}
-      </div>
-    </template>
+      <template #header>
+        <div class="card__header text--hecto text--bold">
+          {{ category.name }}
+        </div>
+      </template>
 
-    <template #content>
-      <CardItem  
-        v-for="(topic, i) in category.topics"
-        class="button button--simple button--no-padding"
-        @click="$router.push('/topic/' + topic.name.toLowerCase().replace(/\s/g, '-') + '.' + topic.id)"
-        :key="i"
-      >
-        <template #icon>
-          <RenderSVG 
-            class="icon--medium"       
-            :icon="topicIcons[i]"
-          />
-        </template>
+      <template #content>
+        <CardItem  
+          v-for="(topic, i) in category.topics"
+          class="button button--simple button--no-padding"
+          @click="$router.push('/topic/' + topic.name.toLowerCase().replace(/\s/g, '-') + '.' + topic.id)"
+          :key="i"
+        >
+          <template #icon>
+            <RenderSVG 
+              class="icon--medium"       
+              :icon="topicIcons[i]"
+            />
+          </template>
 
-        <template #title>
-          <h3 class="text text--primary text--bold text--deca">
-            {{ topic.name }}
-          </h3>
-        </template>
-      </CardItem>
-    </template>
-    
-  </Card>
+          <template #title>
+            <h3 class="text text--primary text--bold text--deca">
+              {{ topic.name }}
+            </h3>
+          </template>
+        </CardItem>
+      </template>
+      
+    </Card>
+  </div> 
 </template>
 
 <script>
@@ -50,8 +52,15 @@
       RenderSVG
     },
 
+    data() {
+      return {
+        fetched: false
+      }
+    },
+
     computed: {
       ...mapState('topics', ['forumList']),
+
 
       topicIcons () {
         return topics;
@@ -64,6 +73,7 @@
 
     async mounted() {
       await this.fetchForumList();
+      this.fetched = true;
     }
   }
 </script>

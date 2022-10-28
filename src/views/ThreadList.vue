@@ -1,5 +1,5 @@
 <template>
-  <section class="thread-list" v-if="!pageError">
+  <section class="thread-list" v-if="!pageError && fetched">
     <Button 
       class="button button--normal button--primary button--right button--text-center text--bold"
       @click="$router.push($route.path + '/create-thread')"
@@ -106,6 +106,7 @@
       return {
         pageError: false,
         currentPage: null,
+        fetched: false,
       }
     },
 
@@ -137,7 +138,7 @@
         );
 
         window.scrollTo({top: 0});
-      }
+      },
     },
 
     async mounted() {
@@ -155,6 +156,7 @@
         this.threadList.topic, 
         this.threadList.id,
         this.threadList.pageCount > 1 ? '?p=' + this.currentPage : ''));
+        this.fetched = true;
       }
     }
   }
